@@ -1,0 +1,35 @@
+prefix : <http://iot.schema.org/core/>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix schema: <http://schema.org/>
+prefix sh: <http://www.w3.org/ns/shacl#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+base <http://iot.schema.org/core/>
+
+<AirConditioner>
+{ :providesInterctionPattern [:BinarySwitch :CountDown :RunMode :TargetTemperature :Temperature :WindStrength]+ ;
+  :domain [:Home]  }
+
+<BinarySwitch>
+{ :acceptsInputData [:Toggle] }
+
+<CountDown>
+{ :acceptsInputData [:TimeData] }
+
+<RunMode>
+{ :acceptsInputData [:RunModeData] ;
+ :providesOutputData [:RunModeData] }
+
+<RunModeData>
+{schema:propertyType [:CoolMode :FanMode :DryMode :EnergyOrPowerSaverMode :SleepMode]? }
+
+<Temperature>
+{ :providesOutputData [:TemperatureData] }
+
+<TargetTemperature>
+{ :acceptsInputData [:TemperatureData] ;
+ :providesOutputData [:TemperatureData] }
+
+<TemperatureData>
+{ schema:propertyType xsd:float MinInclusive 5.0 MaxInclusive 35.0 ;
+ schema:unitCode :Celsius }
