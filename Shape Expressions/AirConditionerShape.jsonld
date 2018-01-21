@@ -8,17 +8,17 @@
         "expressions": [
           {
             "type": "TripleConstraint",
-            "predicate": "http://iot.schema.org/core/providesInterctionPattern",
+            "predicate": "http://iotschema.org/providesInterctionPattern",
 
             "valueExpr": {
               "type": "NodeConstraint",
               "values": [
-                "http://iot.schema.org/core/BinarySwitch",
-                "http://iot.schema.org/core/CountDown",
-                "http://iot.schema.org/core/RunMode",
-                "http://iot.schema.org/core/TargetTemperature",
-                "http://iot.schema.org/core/Temperature",
-                "http://iot.schema.org/core/WindStrength"
+                "http://iotschema.org/BinarySwitch",
+                "http://iotschema.org/CountDown",
+                "http://iotschema.org/RunMode",
+                "http://iotschema.org/TargetTemperature",
+                "http://iotschema.org/Temperature",
+                "http://iotschema.org/WindStrength"
               ]
             },
             "min": 1,
@@ -26,45 +26,45 @@
           },
           {
             "type": "TripleConstraint",
-            "predicate": "http://iot.schema.org/core/domain",
+            "predicate": "http://iotschema.org/domain",
             "valueExpr": {
               "type": "NodeConstraint",
               "values": [
-                "http://iot.schema.org/core/Home"
+                "http://iotschema.org/Home"
               ]
             }
           }
         ]
       },
-      "id": "http://iot.schema.org/core/AirConditioner"
+      "id": "http://iotschema.org/AirConditioner"
     },
     {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
-        "predicate": "http://iot.schema.org/core/acceptsInputData",
+        "predicate": "http://iotschema.org/acceptsInputData",
         "valueExpr": {
           "type": "NodeConstraint",
           "values": [
-            "http://iot.schema.org/core/Toggle"
+            "http://iotschema.org/Toggle"
           ]
         }
       },
-      "id": "http://iot.schema.org/core/BinarySwitch"
+      "id": "http://iotschema.org/BinarySwitch"
     },
     {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
-        "predicate": "http://iot.schema.org/core/acceptsInputData",
+        "predicate": "http://iotschema.org/acceptsInputData",
         "valueExpr": {
           "type": "NodeConstraint",
           "values": [
-            "http://iot.schema.org/core/TimeData"
+            "http://iotschema.org/TimeData"
           ]
         }
       },
-      "id": "http://iot.schema.org/core/CountDown"
+      "id": "http://iotschema.org/CountDown"
     },
     {
       "type": "Shape",
@@ -73,27 +73,27 @@
         "expressions": [
           {
             "type": "TripleConstraint",
-            "predicate": "http://iot.schema.org/core/acceptsInputData",
+            "predicate": "http://iotschema.org/acceptsInputData",
             "valueExpr": {
               "type": "NodeConstraint",
               "values": [
-                "http://iot.schema.org/core/RunModeData"
+                "http://iotschema.org/RunModeData"
               ]
             }
           },
           {
             "type": "TripleConstraint",
-            "predicate": "http://iot.schema.org/core/providesOutputData",
+            "predicate": "http://iotschema.org/providesOutputData",
             "valueExpr": {
               "type": "NodeConstraint",
               "values": [
-                "http://iot.schema.org/core/RunModeData"
+                "http://iotschema.org/RunModeData"
               ]
             }
           }
         ]
       },
-      "id": "http://iot.schema.org/core/RunMode"
+      "id": "http://iotschema.org/RunMode"
     },
     {
       "type": "Shape",
@@ -103,31 +103,31 @@
         "valueExpr": {
           "type": "NodeConstraint",
           "values": [
-            "http://iot.schema.org/core/CoolMode",
-            "http://iot.schema.org/core/FanMode",
-            "http://iot.schema.org/core/DryMode",
-            "http://iot.schema.org/core/EnergyOrPowerSaverMode",
-            "http://iot.schema.org/core/SleepMode"
+            "http://iotschema.org/CoolMode",
+            "http://iotschema.org/FanMode",
+            "http://iotschema.org/DryMode",
+            "http://iotschema.org/EnergyOrPowerSaverMode",
+            "http://iotschema.org/SleepMode"
           ]
         },
         "min": 0,
         "max": 1
       },
-      "id": "http://iot.schema.org/core/RunModeData"
+      "id": "http://iotschema.org/RunModeData"
     },
     {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
-        "predicate": "http://iot.schema.org/core/providesOutputData",
+        "predicate": "http://iotschema.org/providesOutputData",
         "valueExpr": {
           "type": "NodeConstraint",
           "values": [
-            "http://iot.schema.org/core/TemperatureData"
+            "http://iotschema.org/TemperatureData"
           ]
         }
       },
-      "id": "http://iot.schema.org/core/Temperature"
+      "id": "http://iotschema.org/Temperature"
     },
     {
       "type": "Shape",
@@ -136,27 +136,27 @@
         "expressions": [
           {
             "type": "TripleConstraint",
-            "predicate": "http://iot.schema.org/core/acceptsInputData",
+            "predicate": "http://iotschema.org/acceptsInputData",
             "valueExpr": {
               "type": "NodeConstraint",
               "values": [
-                "http://iot.schema.org/core/TemperatureData"
+                "http://iotschema.org/TemperatureData"
               ]
             }
           },
           {
             "type": "TripleConstraint",
-            "predicate": "http://iot.schema.org/core/providesOutputData",
+            "predicate": "http://iotschema.org/providesOutputData",
             "valueExpr": {
               "type": "NodeConstraint",
               "values": [
-                "http://iot.schema.org/core/TemperatureData"
+                "http://iotschema.org/TemperatureData"
               ]
             }
           }
         ]
       },
-      "id": "http://iot.schema.org/core/TargetTemperature"
+      "id": "http://iotschema.org/TargetTemperature"
     },
     {
       "type": "Shape",
@@ -194,12 +194,12 @@
             "predicate": "http://schema.org/unitCode",
             "valueExpr": {
               "type": "NodeConstraint",
-              "datatype": "http://iot.schema.org/core/Celsius"
+              "datatype": "http://iotschema.org/Celsius"
             }
           }
         ]
       },
-      "id": "http://iot.schema.org/core/TemperatureData"
+      "id": "http://iotschema.org/TemperatureData"
     }
   ],
   "@context": "https://shexspec.github.io/context.jsonld"

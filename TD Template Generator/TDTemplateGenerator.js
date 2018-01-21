@@ -10,6 +10,7 @@ fs.readdir(dir, (err, files) => {
 	let json = "";
     files.filter(f => f.endsWith('.jsonld'))
          .forEach(f => {
+          console.log(f);
              let data = fs.readFileSync(dir + f, 'UTF-8');
              json = JSON.parse(data);
 			 for (var i = 0, j= 0; i < (json.shapes).length; i++, j++) {
@@ -90,7 +91,7 @@ function processTripleConstraint(id, expression){
 	var jsonData = {};
 	if(expression.type == "TripleConstraint"){
 		var patterns = [];
-		if(expression.predicate == "http://iot.schema.org/core/providesInterctionPattern"){
+		if(expression.predicate == "http://iotschema.org/providesInterctionPattern"){
 			jsonData["name"] = id.slice(id.lastIndexOf("/")+1);
 			jsonData["@type"] = [];
             jsonData["@type"][0] = "Thing";
@@ -109,12 +110,12 @@ function processTripleConstraint(id, expression){
 			result = tdString;
 			createResult(context, tdString);
 		}
-		else if(expression.predicate == "http://iot.schema.org/core/domain"){
+		else if(expression.predicate == "http://iotschema.org/domain"){
 
 		}
 		//process complex data types
-		else if(expression.predicate == "http://iot.schema.org/core/acceptsInputData" || 
-		        expression.predicate == "http://iot.schema.org/core/providesOutputData"){
+		else if(expression.predicate == "http://iotschema.org/acceptsInputData" || 
+		        expression.predicate == "http://iotschema.org/providesOutputData"){
 			if(expression.valueExpr.type == "NodeConstraint"){
 				let values = [];
 				//if valueExpr is a valueset
@@ -286,14 +287,14 @@ function processDataType(dataType){
 
 function getConcept(concept){
 	// ToDo: slice prefix and namespace to it
-	var prefix = getPrefix(concept);
-	prefix = prefix.concat(":");
+	//var prefix = getPrefix(concept);
+	//prefix = prefix.concat(":");
 	var term = concept.slice(concept.lastIndexOf("/")+1);
-	term = prefix.concat(term);
+	//term = prefix.concat(term);
 	return(term);
 }
 
-function getPrefix(term){
+/*function getPrefix(term){
 	var namespace = term.substring(0,term.lastIndexOf("/"));
 	var prefix = namespace.slice(namespace.lastIndexOf("/")+1);
     namespace = namespace.concat("/");
@@ -301,7 +302,7 @@ function getPrefix(term){
 	return(prefix);
 }
 
-let context = [];
+
 function createPrefix(prefix, namespace){
 	var term = {};
 	prefix = prefix.concat(":");
@@ -319,16 +320,22 @@ function createPrefix(prefix, namespace){
 	if(flag == 1){
 		context.push(term);
 	}
-}
+}*/
 
+let context = [];
 function createContext(context){
 	context.push("https://w3c.github.io/wot/w3c-wot-td-context.jsonld");
+	var iotContext = "../iotschema-context.jsonld";
+	let data = fs.readFileSync(iotContext, 'UTF-8');
+    var json = JSON.parse(data);
+	context.push(json["@context"]);
 }
 
 function createResult(context, tdString){
 	var jsonObject = {};
 	createContext(context);
 	jsonObject["root"] = tdString;
-	jsonObject["context"] = context;
-	console.log("Thing Description "+JSON.stringify(jsonObject));
+	jsonObject["@context"] = context;
+        var tdString = JSON.stringify(jsonObject).replace(/\\/g, "");
+	console.log("Thing Description "+tdString);
 }
