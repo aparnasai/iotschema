@@ -1,364 +1,75 @@
 {
  "name":"AirConditioner",
  "@type":["Thing","AirConditioner"],
- "interaction":[{
+ "base":{},
+ "interaction":[
+ {
   "name":"BinarySwitch",
-  "inputData":"Toggle",
+  "inputData":{"type":"Toogle"},
   "@type":["Property","BinarySwitch"],
-  "writable":false,
+  "writable":true,
   "link":[{"href":" ","mediaType":" "}]
-  },
-  {
+ },
+ {
   "name":"CountDown",
-  "inputData": "TimeData",
+  "inputData":{"type":"TimeData"},
   "@type":["Property","CountDown"],
-  "writable":false,
-  "link":[{"href":" ","mediaType":" "}]},
-  {"name":"RunMode",
+  "writable":true,
+  "link":[{"href":" ","mediaType":" "}]
+ },
+ {
+  "name":"RunMode",
   "inputData":{
-         "type":"string",
-		 "enum":["CoolMode","FanMode",
-                  "DryMode","EnergyOrPowerSaverMode",
-				  "SleepMode"]},
-  "outputData":{"type":"string",
-		 "enum":["CoolMode","FanMode",
-                  "DryMode","EnergyOrPowerSaverMode",
-				  "SleepMode"]},
+   "type":"string",
+   "enum":["CoolMode","FanMode","DryMode","EnergyOrPowerSaverMode","SleepMode"]},
+  "outputData":{
+   "type":"string",
+   "enum":["CoolMode","FanMode","DryMode","EnergyOrPowerSaverMode","SleepMode"]
+  },
   "@type":["Property","RunMode"],
   "writable":true,
   "link":[{"href":" ","mediaType":" "}]
-  },
-  {
+ },
+ {
   "name":"TargetTemperature",
-  "inputData":{"type":"object",
-                "properties":{
-				"TemperatureData":{
-					"type":"float","minimum":5,"maximum":35}}},
-  "outputData":{"type":"object",
-                 "properties":{
-				 "TemperatureData":
-				 {"type":"float","minimum":5,"maximum":35}}},
+  "inputData":{
+  "type":"object",
+  "properties":{
+   "TemperatureData":{
+    "type":"float",
+	"minimum":5
+  },
+  "unit":"Celsius"
+ }},
+ "outputData":{
+  "type":"object",
+  "properties":{
+   "TemperatureData":{
+    "type":"float",
+	"minimum":5
+   },
+   "unit":"Celsius"
+  }},
   "@type":["Property","TargetTemperature"],
   "writable":true,
   "link":[{"href":" ","mediaType":" "}]
  },
  {
- "name":"Temperature",
- "outputData":{"type":"object",
-               "properties":{
-			   "TemperatureData":{
-			   "type":"float","minimum":5,"maximum":35}}},
- "@type":["Property","Temperature"],
- "writable":false,
- "link":[{"href":" ","mediaType":" "}]}],
- "@context":{"https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
- {
-    "DryMode" : {
-      "@id" : "http://iotschema.org/DryMode"
-    },
-    "TargetTemperature" : {
-      "@id" : "http://iotschema.org/TargetTemperature"
-    },
-    "Common" : {
-      "@id" : "http://iotschema.org/Common"
-    },
-    "RampTime" : {
-      "@id" : "http://iotschema.org/RampTime"
-    },
-    "Unit" : {
-      "@id" : "http://iotschema.org/Unit"
-    },
-    "Celsius" : {
-      "@id" : "http://iot.schema.org/core#Celsius"
-    },
-    "Humidity" : {
-      "@id" : "http://iotschema.org/Humidity"
-    },
-    "MotionControl" : {
-      "@id" : "http://iotschema.org/MotionControl"
-    },
-    "PercentUnit" : {
-      "@id" : "http://iot.schema.org/core#PercentUnit"
-    },
-    "Kelvin" : {
-      "@id" : "http://iot.schema.org/core#Kelvin"
-    },
-    "Thing" : {
-      "@id" : "http://schema.org/Thing"
-    },
-    "StateData" : {
-      "@id" : "http://iotschema.org/StateData"
-    },
-    "TurnOff" : {
-      "@id" : "http://iotschema.org/TurnOff"
-    },
-    "TemperatureSensing" : {
-      "@id" : "http://iotschema.org/TemperatureSensing"
-    },
-    "DimmerData" : {
-      "@id" : "http://iotschema.org/DimmerData"
-    },
-    "FeatureOfInterest" : {
-      "@id" : "http://iotschema.org/FeatureOfInterest"
-    },
-    "CoolMode" : {
-      "@id" : "http://iotschema.org/CoolMode"
-    },
-    "Fahrenheit" : {
-      "@id" : "http://iot.schema.org/core#Fahrenheit"
-    },
-    "HumidityData" : {
-      "@id" : "http://iotschema.org/HumidityData"
-    },
-    "providesInteractionPattern" : {
-      "@id" : "http://iotschema.org/providesInteractionPattern"
-    },
-    "RunModeData" : {
-      "@id" : "http://iotschema.org/RunModeData"
-    },
-    "domainIncludes" : {
-      "@id" : "http://schema.org/domainIncludes"
-    },
-    "BinarySwitch" : {
-      "@id" : "http://iotschema.org/BinarySwitch"
-    },
-    "CurrentColour" : {
-      "@id" : "http://iotschema.org/CurrentColour"
-    },
-    "MotionDetected" : {
-      "@id" : "http://iotschema.org/MotionDetected"
-    },
-    "label" : {
-      "@id" : "http://www.w3.org/2000/01/rdf-schema#label"
-    },
-    "TimeData" : {
-      "@id" : "http://iotschema.org/TimeData"
-    },
-    "Mobility" : {
-      "@id" : "http://iotschema.org/Mobility"
-    },
-    "SetLevel" : {
-      "@id" : "http://iotschema.org/SetLevel"
-    },
-    "coment" : {
-      "@id" : "http://www.w3.org/2000/01/rdf-schema#coment"
-    },
-    "Second" : {
-      "@id" : "http://iot.schema.org/core#Second"
-    },
-    "IlluminanceData" : {
-      "@id" : "http://iotschema.org/IlluminanceData"
-    },
-    "RunMode" : {
-      "@id" : "http://iotschema.org/RunMode"
-    },
-    "SetDimmer" : {
-      "@id" : "http://iotschema.org/SetDimmer"
-    },
-    "Temperature" : {
-      "@id" : "http://iotschema.org/Temperature"
-    },
-    "maxValue" : {
-      "@id" : "http://schema.org/maxValue"
-    },
-    "Event" : {
-      "@id" : "http://iotschema.org/Event"
-    },
-    "MotionTypeData" : {
-      "@id" : "http://iotschema.org/MotionTypeData"
-    },
-    "Percent" : {
-      "@id" : "http://iot.schema.org/core#Percent"
-    },
-    "MotionDetectedExt" : {
-      "@id" : "http://iotschema.org/MotionDetectedExt"
-    },
-    "SetColour" : {
-      "@id" : "http://iotschema.org/SetColour"
-    },
-    "PropertyValue" : {
-      "@id" : "http://schema.org/PropertyValue"
-    },
-    "Minute" : {
-      "@id" : "http://iot.schema.org/core#Minute"
-    },
-    "TransitionTime" : {
-      "@id" : "http://iotschema.org/TransitionTime"
-    },
-    "Domain" : {
-      "@id" : "http://iotschema.org/Domain"
-    },
-    "Thermostat" : {
-      "@id" : "http://iotschema.org/Thermostat"
-    },
-    "TemperatureData" : {
-      "@id" : "http://iotschema.org/TemperatureData"
-    },
-    "WindStrength" : {
-      "@id" : "http://iotschema.org/WindStrength"
-    },
-    "TimeUnitType" : {
-      "@id" : "http://iot.schema.org/core#TimeUnitType"
-    },
-    "StatusData" : {
-      "@id" : "http://iotschema.org/StatusData"
-    },
-    "Building" : {
-      "@id" : "http://iotschema.org/Building"
-    },
-    "Capability" : {
-      "@id" : "http://iotschema.org/Capability"
-    },
-    "rangeIncludes" : {
-      "@id" : "http://schema.org/rangeIncludes"
-    },
-    "PIR" : {
-      "@id" : "http://iotschema.org/PIR"
-    },
-    "BColourData" : {
-      "@id" : "http://iotschema.org/BColourData"
-    },
-    "Hour" : {
-      "@id" : "http://iot.schema.org/core#Hour"
-    },
-    "SleepMode" : {
-      "@id" : "http://iotschema.org/SleepMode"
-    },
-    "WindData" : {
-      "@id" : "http://iotschema.org/WindData"
-    },
-    "RunModeType" : {
-      "@id" : "http://iotschema.org/RunModeType"
-    },
-    "domain" : {
-      "@id" : "http://iotschema.org/domain"
-    },
-    "propertyType" : {
-      "@id" : "http://schema.org/propertyType"
-    },
-    "OperationStatus" : {
-      "@id" : "http://iotschema.org/OperationStatus"
-    },
-    "Toggle" : {
-      "@id" : "http://iotschema.org/Toggle"
-    },
-    "Lux" : {
-      "@id" : "http://iot.schema.org/core#Lux"
-    },
-    "reference" : {
-      "@id" : "http://iot.schema.org/core#reference"
-    },
-    "Property" : {
-      "@id" : "http://iotschema.org/Property"
-    },
-    "FanMode" : {
-      "@id" : "http://iotschema.org/FanMode"
-    },
-    "RColourData" : {
-      "@id" : "http://iotschema.org/RColourData"
-    },
-    "source" : {
-      "@id" : "http://purl.org/dc/terms/source"
-    },
-    "isObservedBy" : {
-      "@id" : "http://iotschema.org/isObservedBy"
-    },
-    "MotionSensorType" : {
-      "@id" : "http://iotschema.org/MotionSensorType"
-    },
-    "hasFeatureOfInterest" : {
-      "@id" : "http://iotschema.org/hasFeatureOfInterest"
-    },
-    "observedProperty" : {
-      "@id" : "http://iotschema.org/observedProperty"
-    },
-    "AirConditioner" : {
-      "@id" : "http://iotschema.org/AirConditioner"
-    },
-    "TargetHumidity" : {
-      "@id" : "http://iotschema.org/TargetHumidity"
-    },
-    "TemperatureUnit" : {
-      "@id" : "http://iot.schema.org/core#TemperatureUnit"
-    },
-    "MotionType" : {
-      "@id" : "http://iotschema.org/MotionType"
-    },
-    "LightControl" : {
-      "@id" : "http://iotschema.org/LightControl"
-    },
-    "GColourData" : {
-      "@id" : "http://iotschema.org/GColourData"
-    },
-    "StateDataExt" : {
-      "@id" : "http://iotschema.org/StateDataExt"
-    },
-    "Illuminance" : {
-      "@id" : "http://iotschema.org/Illuminance"
-    },
-    "IlluminanceSensing" : {
-      "@id" : "http://iotschema.org/IlluminanceSensing"
-    },
-    "InteractionPattern" : {
-      "@id" : "http://iotschema.org/InteractionPattern"
-    },
-    "TurnOn" : {
-      "@id" : "http://iotschema.org/TurnOn"
-    },
-    "providesOutputData" : {
-      "@id" : "http://iotschema.org/providesOutputData"
-    },
-    "Actuator" : {
-      "@id" : "http://iotschema.org/Actuator"
-    },
-    "IlluminanceUnit" : {
-      "@id" : "http://iot.schema.org/core#IlluminanceUnit"
-    },
-    "LevelData" : {
-      "@id" : "http://iotschema.org/LevelData"
-    },
-    "Enumeration" : {
-      "@id" : "http://schema.org/Enumeration"
-    },
-    "comment" : {
-      "@id" : "http://www.w3.org/2000/01/rdf-schema#comment"
-    },
-    "acceptsInputData" : {
-      "@id" : "http://iotschema.org/acceptsInputData"
-    },
-    "CurrentDimmer" : {
-      "@id" : "http://iotschema.org/CurrentDimmer"
-    },
-    "Device" : {
-      "@id" : "http://iotschema.org/Device"
-    },
-    "Action" : {
-      "@id" : "http://iotschema.org/Action"
-    },
-    "minValue" : {
-      "@id" : "http://schema.org/minValue"
-    },
-    "SwitchStatus" : {
-      "@id" : "http://iotschema.org/SwitchStatus"
-    },
-    "CurrentLevel" : {
-      "@id" : "http://iotschema.org/CurrentLevel"
-    },
-    "unitCode" : {
-      "@id" : "http://schema.org/unitCode"
-    },
-    "EnergyOrPowerSaverMode" : {
-      "@id" : "http://iotschema.org/EnergyOrPowerSaverMode"
-    },
-    "HumiditySensing" : {
-      "@id" : "http://iotschema.org/HumiditySensing"
-    },
-    "Sensor" : {
-      "@id" : "http://iotschema.org/Sensor"
-    },
-    "CountDown" : {
-      "@id" : "http://iotschema.org/CountDown"
-    }
-  }
-}
+  "name":"Temperature",
+  "outputData":{
+   "type":"object",
+   "properties":{
+    "TemperatureData":{
+	 "type":"float",
+	 "minimum":5
+	},
+	"unit":"Celsius"
+   }},
+   "@type":["Property","Temperature"],
+   "writable":false,
+   "link":[{"href":" ","mediaType":" "}]
+  }],
+ "Domain":["Home"],
+ "@context":["https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+ "https://github.com/iot-schema-collab/iotschema/iotschema-context.jsonld"]
 }

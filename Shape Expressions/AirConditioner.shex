@@ -7,8 +7,12 @@ prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 base <http://iotschema.org/>
 
 <AirConditioner>
-{ :providesInterctionPattern [:BinarySwitch :CountDown :RunMode :TargetTemperature :Temperature :WindStrength]+ ;
-  :domain [:Home]  }
+{ :providesInteractionPattern [:BinarySwitch ]} AND
+{ :providesInteractionPattern [:CountDown  ]} AND
+{ :providesInteractionPattern [:RunMode ]} AND
+{ :providesInteractionPattern [:TargetTemperature ]} AND
+{ :providesInteractionPattern [ :Temperature :WindStrength]} AND
+{ :domain [:Home]  }
 
 <BinarySwitch>
 { :acceptsInputData [:Toggle] }

@@ -1,0 +1,63 @@
+{
+ "name":"Pump",
+ "@type":["Thing","Pump"],
+  "base": "",
+ "interaction":[
+ {
+  "name":"TurnOn",
+  "inputData":{"type": true},
+  "@type":["Property","TurnOn"],
+  "writable":true,
+  "link":[{"href":" ","mediaType":" "}]},
+  {
+   "name":"TurnOff",
+   "inputData":{"type": true},
+   "@type":["Property","TurnOff"],
+   "writable":true,
+   "link":[{"href":" ","mediaType":" "}]
+  },
+  {
+   "name":"PumpStatus",
+   "outputData":{"type": "boolean"},
+   "@type":["Property","PumpStatus"],
+   "writable":false,
+   "link":[{"href":" ","mediaType":" "}]
+  },
+  {
+   "name":"FlowRate",
+   "outputData":{
+    "type":"object",
+	"properties":{
+	 "FlowRateData":{
+	  "type":"float",
+	  "maximum":4500
+	  },
+	 "unit":"GallonsPerMinute"
+	 }
+	},
+	"@type":["Property","FlowRate"],
+	"writable":false,
+	"link":[{"href":" ","mediaType":" "}]
+  },
+  {
+   "name":"Temperature",
+   "outputData":
+   { 
+    "type":"object",
+	"properties":{
+	 "TemperatureData":{
+	 "type":"float",
+	 "maximum":250
+	},
+	 "unit":"Fahrenheit"
+	}
+   },
+   "@type":["Property","Temperature"],
+   "writable":false,
+   "link":[{"href":" ","mediaType":" "}]
+ }],
+ "Domain":["Industry"],
+ "@context":[
+  "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+  "https://github.com/iot-schema-collab/iotschema/iotschema-context.jsonld"]
+}

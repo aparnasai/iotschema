@@ -92,6 +92,120 @@
 		"rdfs:label": "Percent Unit",
 	    "iot:reference" : "0112/2///62720#UAA000#001",
 	    "dct:source": "http://qudt.org/vocab/unit#Percent"		
-	}	
+	},
+    {
+		"@id": "iot:PumpSpeedUnit",
+		"@type": "rdfs:Class",
+		"rdfs:comment": "An enumeration of pump seed units.",
+		"rdfs:label": "Pump speed Unit",
+		"rdfs:subClassOf": {
+		"@id": "schema:Enumeration"
+		}
+	},
+    {	
+		"@id": "iot:RevolutionsPerMinute",
+		"@type": "iot:PumpSpeedUnit",
+		"rdfs:comment": "unit of measurement of a pump speed",
+		"rdfs:label": "Revolutions Per Minute",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#RevolutionsPerMinute"
+	},	
+    {
+		"@id": "iot:FlowRateUnit",
+		"@type": "rdfs:Class",
+		"rdfs:comment": "An enumeration of flowrate units.",
+		"rdfs:label": "Flow rate Unit",
+		"rdfs:subClassOf": {
+		"@id": "schema:Enumeration"
+		}
+	},
+    {	
+		"@id": "iot:GallonsPerMinute",
+		"@type": "iot:FlowRateUnit",
+		"rdfs:comment": "unit of measurement of liquid flow rate in a pump",
+		"rdfs:label": "Gallons per minute",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#GallonUSPerMinute"
+	},
+    {	
+		"@id": "iot:CubicMeterPerSecond",
+		"@type": "iot:FlowRateUnit",
+		"rdfs:comment": "unit of measurement of liquid flow rate in a pump",
+		"rdfs:label": "Cubic Meter Per Second",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#CubicMeterPerSecond"
+	},	
+    {	
+		"@id": "iot:CubicYardPerMinute",
+		"@type": "iot:FlowRateUnit",
+		"rdfs:comment": "unit of measurement of liquid flow rate in a pump",
+		"rdfs:label": "Cubic Yard Per Minute",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#CubicYardPerMinute"
+	},	
+    {	
+		"@id": "iot:CubicFootPerMinute",
+		"@type": "iot:FlowRateUnit",
+		"rdfs:comment": "unit of measurement of liquid flow rate in a pump",
+		"rdfs:label": "Cubic Foot Per Minute",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#CubicFootPerMinute"
+	},	
+    {	
+		"@id": "iot:CubicFootPerSecond",
+		"@type": "iot:FlowRateUnit",
+		"rdfs:comment": "unit of measurement of liquid flow rate in a pump",
+		"rdfs:label": "Cubic Foot Per Second",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#CubicFootPerSecond"
+	},	
+    {	
+		"@id": "iot:CubicInchPerMinute",
+		"@type": "iot:FlowRateUnit",
+		"rdfs:comment": "unit of measurement of liquid flow rate in a pump",
+		"rdfs:label": "Cubic Inch Per Minute",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#CubicInchPerMinute"
+	},	
+    {	
+		"@id": "iot:CubicInchPerMinute",
+		"@type": "iot:FlowRateUnit",
+		"rdfs:comment": "unit of measurement of liquid flow rate in a pump",
+		"rdfs:label": "Cubic Inch Per Minute",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#CubicInchPerMinute"
+	},	
+    {	
+		"@id": "iot:CubicMeterPerHour",
+		"@type": "iot:FlowRateUnit",
+		"rdfs:comment": "unit of measurement of liquid flow rate in a pump",
+		"rdfs:label": "Cubic Meter Per Hour",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#CubicMeterPerHour"
+	},
+    {
+		"@id": "iot:PressureUnit",
+		"@type": "rdfs:Class",
+		"rdfs:comment": "An enumeration of pressure units.",
+		"rdfs:label": "Pressure Unit",
+		"rdfs:subClassOf": {
+		"@id": "schema:Enumeration"
+		}
+	},
+    {	
+		"@id": "iot:PoundPerSquareInch",
+		"@type": "iot:PressureUnit",
+		"rdfs:comment": "unit of measurement of pressure in a pump (psi)",
+		"rdfs:label": "Pound Per Square Inch",
+		"iot:reference": "..."
+	},
+    {	
+		"@id": "iot:Bar",
+		"@type": "iot:PressureUnit",
+		"rdfs:comment": "unit of measurement of pressure in a pump (bar)",
+		"rdfs:label": "Bar",
+		"iot:reference": "...",
+		"dct:source": "http://data.nasa.gov/qudt/owl/unit#Bar"
+	}		
   ]
 }

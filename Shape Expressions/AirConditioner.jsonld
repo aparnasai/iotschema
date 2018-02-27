@@ -2,29 +2,77 @@
   "type": "Schema",
   "shapes": [
     {
-      "type": "Shape",
-      "expression": {
-        "type": "EachOf",
-        "expressions": [
-          {
+      "type": "ShapeAnd",
+      "shapeExprs": [
+        {
+          "type": "Shape",
+          "expression": {
             "type": "TripleConstraint",
-            "predicate": "http://iotschema.org/providesInterctionPattern",
-
+            "predicate": "http://iotschema.org/providesInteractionPattern",
             "valueExpr": {
               "type": "NodeConstraint",
               "values": [
-                "http://iotschema.org/BinarySwitch",
-                "http://iotschema.org/CountDown",
-                "http://iotschema.org/RunMode",
-                "http://iotschema.org/TargetTemperature",
+                "http://iotschema.org/BinarySwitch"
+              ]
+            }
+          }
+        },
+        {
+          "type": "Shape",
+          "expression": {
+            "type": "TripleConstraint",
+            "predicate": "http://iotschema.org/providesInteractionPattern",
+            "valueExpr": {
+              "type": "NodeConstraint",
+              "values": [
+                "http://iotschema.org/CountDown"
+              ]
+            }
+          }
+        },
+        {
+          "type": "Shape",
+          "expression": {
+            "type": "TripleConstraint",
+            "predicate": "http://iotschema.org/providesInteractionPattern",
+            "valueExpr": {
+              "type": "NodeConstraint",
+              "values": [
+                "http://iotschema.org/RunMode"
+              ]
+            }
+          }
+        },
+        {
+          "type": "Shape",
+          "expression": {
+            "type": "TripleConstraint",
+            "predicate": "http://iotschema.org/providesInteractionPattern",
+            "valueExpr": {
+              "type": "NodeConstraint",
+              "values": [
+                "http://iotschema.org/TargetTemperature"
+              ]
+            }
+          }
+        },
+        {
+          "type": "Shape",
+          "expression": {
+            "type": "TripleConstraint",
+            "predicate": "http://iotschema.org/providesInteractionPattern",
+            "valueExpr": {
+              "type": "NodeConstraint",
+              "values": [
                 "http://iotschema.org/Temperature",
                 "http://iotschema.org/WindStrength"
               ]
-            },
-            "min": 1,
-            "max": "*"
-          },
-          {
+            }
+          }
+        },
+        {
+          "type": "Shape",
+          "expression": {
             "type": "TripleConstraint",
             "predicate": "http://iotschema.org/domain",
             "valueExpr": {
@@ -34,8 +82,8 @@
               ]
             }
           }
-        ]
-      },
+        }
+      ],
       "id": "http://iotschema.org/AirConditioner"
     },
     {
@@ -168,24 +216,8 @@
             "predicate": "http://schema.org/propertyType",
             "valueExpr": {
               "type": "NodeConstraint",
-              "datatype": "http://www.w3.org/2001/XMLSchema#float"
-            }
-          },
-          {
-            "type": "TripleConstraint",
-            "predicate": "http://schema.org/minValue",
-            "valueExpr": {
-              "type": "NodeConstraint",
               "datatype": "http://www.w3.org/2001/XMLSchema#float",
-              "mininclusive": 5
-            }
-          },
-          {
-            "type": "TripleConstraint",
-            "predicate": "http://schema.org/maxValue",
-            "valueExpr": {
-              "type": "NodeConstraint",
-              "datatype": "http://www.w3.org/2001/XMLSchema#float",
+              "mininclusive": 5,
               "maxinclusive": 35
             }
           },

@@ -91,19 +91,25 @@
 		"@type": "rdfs:Class",
 		"rdfs:comment": "Turn on a switch",
 		"rdfs:label": "Turn On",
+		"iot:acceptsInputData": {
+			"@id": "schema:True"
+		},		
 		"rdfs:subClassOf": {
 			"@id": "iot:Property"
 		}
-	},
+	},	
 	{
 		"@id": "iot:TurnOff",
 		"@type": "rdfs:Class",
 		"rdfs:comment": "Turn off a switch",
 		"rdfs:label": "Turn Off",
+		"iot:acceptsInputData": {
+			"@id": "schema:True"
+		},		
 		"rdfs:subClassOf": {
 			"@id": "iot:Property"
 		}
-	},
+	},	
 	{
 		"@id": "iot:SwitchStatus",
 		"@type": "rdfs:Class",
@@ -550,7 +556,88 @@
 		"rdfs:subClassOf": {
 			"@id": "iot:Property"
 		}
-	}
+	},
+	{
+		"@id": "iot:PumpSpeed",
+		"@type": "rdfs:Class",
+		"rdfs:comment": "Pump speed interaction property ",
+		"rdfs:label": "PumpSpeed",
+		"rdfs:subClassOf": { "@id": "iot:Property" },
+		"iot:providesOutputData": [
+		{
+			"@id": "iot:PumpSpeedData"
+		}
+		]
+    },
+    {
+		"@id": "iot:PumpSpeedData",
+		"@type": "rdfs:Class",
+		"rdfs:comment": " PumpSpeed data",
+		"rdfs:label": "PumpSpeed Data",
+		"rdfs:subClassOf": { "@id": "schema:PropertyValue" },
+		"schema:propertyType": { "@id": "schema:Float" },
+		"schema:unitCode": { "@id": "iot:SpeedUnit" },
+		"schema:minValue": "schema:Float",
+		"schema:maxValue": "schema:Float"		
+    },	
+	{
+		"@id": "iot:PumpStatus",
+		"@type": "rdfs:Class",
+		"iot:providesOutputData": {
+			"@id": "schema:Boolean"
+		},		
+		"rdfs:comment": "Status of a pump",
+		"rdfs:label": "Pump Status",
+		"rdfs:subClassOf": {
+			"@id": "iot:Property"
+		}
+	},
+	{
+		"@id": "iot:Pressure",
+		"@type": "rdfs:Class",
+		"iot:providesOutputData": {
+			"@id": "iot:PressureData"
+		},		
+		"rdfs:comment": "pressure",
+		"rdfs:label": "pressure",
+		"rdfs:subClassOf": {
+			"@id": "iot:Property"
+		}
+	},
+    {
+		"@id": "iot:PressureData",
+		"@type": "rdfs:Class",
+		"rdfs:comment": " Pressure data",
+		"rdfs:label": "Pressure Data",
+		"rdfs:subClassOf": { "@id": "schema:PropertyValue" },
+		"schema:propertyType": { "@id": "schema:Float" },
+		"schema:unitCode": { "@id": "iot:PressureUnit" },
+		"schema:minValue": "schema:Float",
+		"schema:maxValue": "schema:Float"		
+    },
+	{
+		"@id": "iot:MaximumFlowRate",
+		"@type": "rdfs:Class",
+		"iot:providesOutputData": {
+			"@id": "iot:FlowRateData"
+		},		
+		"rdfs:comment": "MaximumFlowRate",
+		"rdfs:label": "MaximumFlowRate",
+		"rdfs:subClassOf": {
+			"@id": "iot:Property"
+		}
+	},
+    {
+		"@id": "iot:FlowRateData",
+		"@type": "rdfs:Class",
+		"rdfs:comment": " FlowRate data",
+		"rdfs:label": "FlowRate Data",
+		"rdfs:subClassOf": { "@id": "schema:PropertyValue" },
+		"schema:propertyType": { "@id": "schema:Float" },
+		"schema:unitCode": { "@id": "iot:FlowRateUnit" },
+		"schema:minValue": "schema:Float",
+		"schema:maxValue": "schema:Float"		
+    }	
   ]
 }
 

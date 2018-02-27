@@ -1,0 +1,38 @@
+prefix : <http://iotschema.org/>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix schema: <http://schema.org/>
+prefix sh: <http://www.w3.org/ns/shacl#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+base <http://iotschema.org/>
+
+<Pump>
+ {:providesInteractionPattern [ :TurnOn ] } 
+ AND {:providesInteractionPattern [ :TurnOff ] }
+ AND {:providesInteractionPattern [ :PumpStatus ] }
+ AND {:providesInteractionPattern [ :FlowRate ] }
+ AND {:providesInteractionPattern [ :Temperature ] } ;
+ :domain [:Industry] }
+
+<TurnOn>
+{ :acceptsInputData schema:True }
+
+<TurnOff>
+{ :acceptsInputData schema:True }
+
+<PumpStatus>
+{ :providesOutputData schema:Boolean }
+
+<FlowRate>
+{ :providesOutputData [:FlowRateData] }
+
+<Temperature>
+{ :providesOutputData [:TemperatureData] }
+
+<FlowRateData>
+{ schema:propertyType xsd:float MinInclusive 0 MaxInclusive 4500 ;
+ schema:unitCode :GallonsPerMinute }
+
+<TemperatureData>
+{ schema:propertyType xsd:float MinInclusive 0.0 MaxInclusive 250.0 ;
+ schema:unitCode :Fahrenheit } 

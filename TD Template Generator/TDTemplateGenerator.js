@@ -35,6 +35,7 @@ function processShape(shape){
 				 else if(shape.expression.type){
 					 if(shape.expression.type == "TripleConstraint"){
 						 var id = shape.id;
+						console.log("HERE1: "+id); 
 						jsonData["name"] = id.slice(id.lastIndexOf("/")+1);
 						 var tdPredicate = {};
 						 if((getConcept(shape.expression.predicate)).includes("acceptsInputData")){
@@ -42,24 +43,26 @@ function processShape(shape){
 						}else if((getConcept(shape.expression.predicate)).includes("providesOutputData")){
 							tdPredicate = "outputData";
 						} 
-						jsonData[tdPredicate] = processTripleConstraint(shape.id, shape.expression);
+						jsonData[tdPredicate] = processTripleConstraint(shape.id, shape.expression, {});
 						jsonData = createInteractionTemplate(shape.id, jsonData);
 
 					 }
 				 } else{
 					 console.log("continue");
 				 }	
-				 return JSON.stringify(jsonData);
+				 return jsonData;
 	
 }
 function processShapeExpressions(id, shapeExprs){
      var jsonData = {};
 	for(var k = 0; k < shapeExprs.length; k++){
 		if(shapeExprs[k].expression.type == "TripleConstraint"){
-			jsonData = processTripleConstraint(id, shapeExprs[k].expression); 
+			//console.log("12: "+JSON.stringify(jsonData).replace(/\\/g, ""));
+			jsonData = processTripleConstraint(id, shapeExprs[k].expression, jsonData); 
 		}
 	}
-	return JSON.stringify(jsonData); 
+	//return JSON.stringify(jsonData).replace(/\\/g, ""); 
+	return jsonData;
 }
 function processEachOfNode(id, expression){
     var jsonData = {};
@@ -77,41 +80,58 @@ function processEachOfNode(id, expression){
 			}
 			//jsonData[tdPredicate] = {};
 
-			data = processTripleConstraint(id, expression.expressions[k]); 
+			data = processTripleConstraint(id, expression.expressions[k], {}); 
 	    }
 		jsonData[tdPredicate] = data;
     }
 	var interaction = createInteractionTemplate(id, jsonData);
-	return JSON.stringify(interaction);
+	return interaction;
 }
 
 let count = 0;	
 let processedIds = [];
-function processTripleConstraint(id, expression){
-	var jsonData = {};
+let tdCreate = 0;
+let intnum = 0;
+function processTripleConstraint(id, expression, jsonData){
+	//var jsonData = {};
 	if(expression.type == "TripleConstraint"){
 		var patterns = [];
-		if(expression.predicate == "http://iotschema.org/providesInterctionPattern"){
+		if(expression.predicate == "http://iotschema.org/providesInteractionPattern"){
+			if(tdCreate == 0){
 			jsonData["name"] = id.slice(id.lastIndexOf("/")+1);
 			jsonData["@type"] = [];
             jsonData["@type"][0] = "Thing";
-            jsonData["@type"][1] = getConcept(id); 			
-			jsonData["interaction"]= [];
-			for (var i = 0, j= 0; i < (expression.valueExpr.values).length; i++, j++) {
+            jsonData["@type"][1] = getConcept(id); 	
+			jsonData["base"] = {}; 
+            jsonData["interaction"] = [];			
+			tdCreate = 1;
+			}
+			for (var i = 0, j = 0; i < (expression.valueExpr.values).length; i++, j++, intnum++) {
 				patterns[j] = expression.valueExpr.values[i];
 			    for(var k = 0; k < ids.length; k++){
 					if(patterns[j] == ids[k]){ 
-					    jsonData["interaction"][j]  = processShape(shapes[k]);
+					console.log("11: "+jsonData["name"]);
+					  //  jsonData["interaction"][intnum]  = processShape(shapes[k]);
+					  var data = {};
+					  data = processShape(shapes[k]);
+					  jsonData["interaction"][intnum]  = data;
 					}
 				}		
 			}
-			var tdString = JSON.stringify(jsonData);
-			tdString = tdString.replace(/\\/g, "");
-			result = tdString;
-			createResult(context, tdString);
 		}
 		else if(expression.predicate == "http://iotschema.org/domain"){
-
+		jsonData["Domain"] = [];
+		for (var i = 0, j = 0; i < (expression.valueExpr.values).length; i++, j++) {
+         jsonData["Domain"][j] = getConcept(expression.valueExpr.values[i]);
+			}
+			var cont = createContext();
+			jsonData["@context"] = cont;
+			console.log("context: "+jsonData["@context"]);
+			var tdString = JSON.stringify(jsonData);
+			tdString = tdString.replace(/\\/g, "");
+			//result = tdString;
+			//createResult(tdString);
+			console.log("Thing Description: "+tdString);
 		}
 		//process complex data types
 		else if(expression.predicate == "http://iotschema.org/acceptsInputData" || 
@@ -124,7 +144,13 @@ function processTripleConstraint(id, expression){
 					values[j] = expression.valueExpr.values[i];
 					jsonData = processInteractionNode(id, expression.predicate,values[j]);
 				}
-			  }			
+			  }	else if(expression.valueExpr.datatype){
+				  console.log(id);
+				  console.log(expression.predicate);
+				  console.log(expression.valueExpr.datatype);
+				  jsonData = processInteractionNode(id, expression.predicate, expression.valueExpr.datatype);
+				  
+			  }		
 			}
 		}		
 	}
@@ -134,7 +160,8 @@ function processTripleConstraint(id, expression){
 			value = jsonData;
 		processedIds[count]["value"] = value;
         count++;
-	return jsonData;	
+	//return JSON.stringify(jsonData);	
+	return jsonData;
 }
 
 function processedId(id){
@@ -161,16 +188,43 @@ function processInteractionNode(id, predicate, values){
 			}
 		}
 		if(i == 0){
-			jsonData = getConcept(values);
+			console.log("HERE2111111111111111: "+values);
+			jsonData["type"] = getJSONSchemaDatatype(getConcept(values));
 		}	
-		return(JSON.stringify(jsonData));
+		return(jsonData);
+}
+
+function getJSONSchemaDatatype(jsonData){
+	var jsondt = {};
+	if(jsonData == "True"){
+		jsondt = true
+	}
+	else if(jsonData == "False"){
+		jsondt = false
+	}
+	else if(jsonData == "Boolean"){
+		jsondt = "boolean"
+	}
+	else if(jsonData == "Integer"){
+		jsondt = "integer"
+	}
+	else if(jsonData == "Float"){
+		jsondt = "number"
+	}
+	else if(jsonData == "Text"){
+		jsondt = "string"
+	}
+	else{
+		jsondt = getConcept(jsonData);
+	}
+	return jsondt;
 }
 
 function createInteractionTemplate(id, jsonData){
 	jsonData["@type"] = [];
     jsonData["@type"][0] = "Property";
 	jsonData["@type"][1] = getConcept(id); 
-	if(jsonData.inputData && jsonData.outputData){
+	if(jsonData.inputData){
 		jsonData["writable"] = true;
 	}else{
 		jsonData["writable"] = false;
@@ -180,7 +234,7 @@ function createInteractionTemplate(id, jsonData){
 	jsonData["link"][0]["href"] = " ";
 	jsonData["link"][0]["mediaType"] = " ";
 	
-	return JSON.stringify(jsonData);
+	return jsonData;
 }
 
 function createJSONSchema(shapeid, id, shape, predicate){
@@ -192,6 +246,10 @@ function createJSONSchema(shapeid, id, shape, predicate){
     if(shape.type == "Shape"){
 	    //map EachOf shape to JSON Schema eachOf
 		if(shape.expression.type == "EachOf"){
+		//console.log("CHECK: "+id);
+		//console.log(shape.expression.expressions);
+		//console.log(predicate);
+		//console.log(jsonData);
 		processObjectData(id, shape.expression.expressions, predicate, jsonData);			
 	}
 	}
@@ -246,19 +304,20 @@ function processObjectData(id, shape, predicate, jsonData){
 		}
 		else if(shape[i].type == "TripleConstraint"){
 			expression = shape[i];
+			console.log("CHECK 14: "+expression.predicate);
 		}
-		if(expression.valueExpr.datatype){
+		if(expression.valueExpr.datatype && (expression.valueExpr.predicate != "http://schema.org/unitCode")){
 			   dataType = processDataType(expression.valueExpr.datatype);
 		}
 		if(dataType == "integer" || dataType == "float"){
 			jsonData["properties"][id]["type"] = dataType;
 			if(expression.valueExpr.mininclusive){
 			jsonData["properties"][id]["minimum"] = expression.valueExpr.mininclusive;
-			//jsonData["properties"][id]["exclusiveMinimum"] = "false" ;
+			//jsonData["properties"][id]["exclusiveMinimum"] = false ;
 		}
 		else if(expression.valueExpr.maxinclusive){
 			jsonData["properties"][id]["maximum"] = expression.valueExpr.maxinclusive;
-			//jsonData["properties"][id]["exclusiveMaximum"] = "false" ;
+			//jsonData["properties"][id]["exclusiveMaximum"] = false ;
 		}
 		else if(expression.valueExpr.minexclusive){
 			jsonData["properties"][id]["minimum"] = expression.valueExpr.minexclusive;
@@ -271,6 +330,10 @@ function processObjectData(id, shape, predicate, jsonData){
 	 } else if(expression.valueExpr.pattern){
 		 jsonData["properties"]["type"]= "string";
 		 jsonData["properties"]["pattern"] = expression.valueExpr.pattern;
+	 } if(expression.predicate == "http://schema.org/unitCode"){
+		 console.log("Coming HERE");
+		 jsonData["properties"]["unit"] = getConcept(expression.valueExpr.datatype);
+		 
 	 }
 	}	
 	return(JSON.stringify(jsonData));
@@ -323,19 +386,21 @@ function createPrefix(prefix, namespace){
 }*/
 
 let context = [];
-function createContext(context){
+function createContext(){
 	context.push("https://w3c.github.io/wot/w3c-wot-td-context.jsonld");
-	var iotContext = "../iotschema-context.jsonld";
-	let data = fs.readFileSync(iotContext, 'UTF-8');
-    var json = JSON.parse(data);
-	context.push(json["@context"]);
+	context.push("https://github.com/iot-schema-collab/iotschema/iotschema-context.jsonld");
+	//var iotContext = "https://github.com/iot-schema-collab/iotschema/iotschema-context.jsonld";
+	//let data = fs.readFileSync(iotContext, 'UTF-8');
+    //var json = JSON.parse(data);
+	//context.push(json["@context"]);
+	return context;
 }
 
-function createResult(context, tdString){
-	var jsonObject = {};
-	createContext(context);
-	jsonObject["root"] = tdString;
-	jsonObject["@context"] = context;
+function createResult(tdString){
+	//var jsonObject = {};
+	//createContext();
+	//jsonObject["root"] = tdString;
+	//jsonObject["@context"] = context;
         var tdString = JSON.stringify(jsonObject).replace(/\\/g, "");
 	console.log("Thing Description "+tdString);
 }
