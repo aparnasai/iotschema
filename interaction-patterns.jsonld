@@ -595,6 +595,9 @@
 	{
 		"@id": "iot:Pressure",
 		"@type": "rdfs:Class",
+		"iot:acceptsInputData": {
+			"@id": "iot:PressureData"
+		},
 		"iot:providesOutputData": {
 			"@id": "iot:PressureData"
 		},		
@@ -616,13 +619,16 @@
 		"schema:maxValue": "schema:Float"		
     },
 	{
-		"@id": "iot:MaximumFlowRate",
+		"@id": "iot:FlowRate",
 		"@type": "rdfs:Class",
+		"iot:acceptsInputData": {
+			"@id": "iot:FlowRateData"
+		},
 		"iot:providesOutputData": {
 			"@id": "iot:FlowRateData"
 		},		
-		"rdfs:comment": "MaximumFlowRate",
-		"rdfs:label": "MaximumFlowRate",
+		"rdfs:comment": "Flow rate of a pump",
+		"rdfs:label": "FlowRate",
 		"rdfs:subClassOf": {
 			"@id": "iot:Property"
 		}
@@ -637,7 +643,54 @@
 		"schema:unitCode": { "@id": "iot:FlowRateUnit" },
 		"schema:minValue": "schema:Float",
 		"schema:maxValue": "schema:Float"		
-    }	
+    },
+    {
+		"@id": "iot:PumpRunMode",
+		"@type": "rdfs:Class",
+		"iot:acceptsInputData": {
+			"@id": "iot:PumpRunModeData"
+		},
+		"iot:providesOutputData": {
+			"@id": "iot:PumpRunModeData"
+		},
+		"rdfs:comment": "Run modes of a pump",
+		"rdfs:label": "Pump Run Mode",
+		"rdfs:subClassOf": {
+			"@id": "iot:Property"
+      }
+    },
+    {
+		"@id": "iot:PumpRunModeData",
+		"rdfs:comment": "Pump Run modes",
+		"rdfs:label": "Run Mode Data of a pump",
+		"rdfs:subClassOf": {
+			"@id": "schema:PropertyValue"
+		},
+		"schema:propertyType": {
+			"@id": "iot:PumpRunModeType"
+		}
+    },
+	{
+		"@id": "iot:PumpRunModeType",
+		"@type": "rdfs:Class",
+		"rdfs:comment": "An enumeration of run modes of a pump.",
+		"rdfs:label": "Pump Run Mode Type",
+		"rdfs:subClassOf": {
+			"@id": "schema:Enumeration"
+		}
+	},
+    {	
+		"@id": "iot:FixedSpeedMode",
+		"@type": "iot:RunModeType",
+		"rdfs:comment": "Fixed speed operating mode of a pump",
+		"rdfs:label": "Fixed Speed Mode"
+	},
+    {	
+		"@id": "iot:VariableSpeedMode",
+		"@type": "iot:RunModeType",
+		"rdfs:comment": "Variable spped operating mode of a pump",
+		"rdfs:label": "Variable Speed Mode"
+	}	
   ]
 }
 

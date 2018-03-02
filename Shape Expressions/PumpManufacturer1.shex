@@ -1,0 +1,55 @@
+prefix : <http://iotschema.org/>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix schema: <http://schema.org/>
+
+
+prefix sh: <http://www.w3.org/ns/shacl#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+base <http://iotschema.org/>
+
+<Pump>
+ {:providesInteractionPattern [ :TurnOn ] } 
+ AND {:providesInteractionPattern [ :TurnOff ] }
+ AND {:providesInteractionPattern [ :PumpStatus ] }
+ AND {:providesInteractionPattern [ :PumpRunMode ] }
+ AND {:providesInteractionPattern [ :PumpSpeed ] }
+ AND {:providesInteractionPattern [ :FlowRate ] }
+ AND {:providesInteractionPattern [ :Pressure ] }
+ AND { :domain [:Industry] }
+
+<TurnOn>
+{ :acceptsInputData schema:True }
+
+<TurnOff>
+{ :acceptsInputData schema:True }
+
+<PumpStatus>
+{ :providesOutputData schema:Boolean }
+
+<PumpRunMode>
+{ :acceptsInputData [:VariableSpeedMode]  ;
+ :providesOutputData [:VariableSpeedMode] }
+
+<PumpSpeed>
+{ :providesOutputData [:PumpSpeedData] }
+ 
+<FlowRate>
+{ :acceptsInputData [:FlowRateData] ;
+ :providesOutputData [:FlowRateData] }
+
+<Pressure>
+{ :acceptsInputData [:PressureData]  ;
+ :providesOutputData [:PressureData] }
+
+<PumpSpeedData>
+{ schema:propertyType xsd:float MinInclusive 2900.0 MaxInclusive 3500.0 ;
+ schema:unitCode :RevolutionsPerMinute }
+ 
+<FlowRateData>
+{ schema:propertyType xsd:float MinInclusive 7.5 MaxInclusive 295.0 ;
+ schema:unitCode :CubicMeterPerHour }
+
+<PressureData>
+{ schema:propertyType xsd:float MaxInclusive 1200 ;
+ schema:unitCode :PoundPerSquareInch } 

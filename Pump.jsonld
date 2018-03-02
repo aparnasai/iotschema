@@ -17,9 +17,10 @@
 		"@id": "iot:TurnOn",
 		"@id": "iot:TurnOff",
 		"@id": "iot:PumpStatus",
-		"@id": "iot:Temperature",
-		"@id": "iot:Pressure",
+		"@id": "iot:PumpRunMode",
 		"@id": "iot:PumpSpeed",
-		"@id": "iot:FlowRate"	
+		"@id": "iot:Pressure",
+		"@id": "iot:FlowRate",
+        "@id": "iot:Temperature"		
 	}]
 }

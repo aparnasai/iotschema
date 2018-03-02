@@ -340,7 +340,9 @@ function processObjectData(id, shape, predicate, jsonData){
 }
 function processDataType(dataType){
 	if(dataType == "http://www.w3.org/2001/XMLSchema#float")
-		return "float";
+		return "number";
+	else if(dataType == "http://www.w3.org/2001/XMLSchema#double")
+		return "number";
 	else if(dataType == "http://www.w3.org/2001/XMLSchema#integer")
 		return "integer";
 	else if(dataType == "http://www.w3.org/2001/XMLSchema#string")
