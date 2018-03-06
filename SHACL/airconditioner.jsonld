@@ -13,28 +13,54 @@
     {
       "@id": "http://iotschema.org/BinarySwitchShape",
       "@type": "sh:NodeShape",
-      "sh:property": {
-        "@id": "_:ub163bL36C15"
-      },
+      "sh:property": [
+        {
+          "@id": "_:ub301bL36C15"
+        },
+        {
+          "@id": "_:ub301bL42C15"
+        }
+      ],
       "sh:targetClass": {
         "@id": "http://iotschema.org/BinarySwitch"
       }
     },
     {
-      "@id": "_:ub163bL103C17",
-      "sh:datatype": {
-        "@id": "xsd:float"
+      "@id": "_:ub301bL110C15",
+      "sh:in": {
+        "@list": [
+          {
+            "@id": "http://iotschema.org/TemperatureData"
+          }
+        ]
       },
-      "sh:maxInclusive": {
-        "@type": "xsd:decimal",
-        "@value": "35.0"
-      },
-      "sh:minInclusive": {
-        "@type": "xsd:decimal",
-        "@value": "5.0"
-      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
       "sh:path": {
-        "@id": "schema:propertyType"
+        "@id": "http://iotschema.org/providesOutputData"
+      }
+    },
+    {
+      "@id": "_:ub301bL19C15",
+      "sh:in": {
+        "@list": [
+          {
+            "@id": "http://iotschema.org/BinarySwitch"
+          },
+          {
+            "@id": "http://iotschema.org/RunMode"
+          },
+          {
+            "@id": "http://iotschema.org/TargetTemperature"
+          },
+          {
+            "@id": "http://iotschema.org/Temperature"
+          }
+        ]
+      },
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "http://iotschema.org/providesInteractionPattern"
       }
     },
     {
@@ -42,10 +68,10 @@
       "@type": "sh:NodeShape",
       "sh:property": [
         {
-          "@id": "_:ub163bL24C15"
+          "@id": "_:ub301bL19C15"
         },
         {
-          "@id": "_:ub163bL19C15"
+          "@id": "_:ub301bL24C15"
         }
       ],
       "sh:targetClass": {
@@ -53,7 +79,37 @@
       }
     },
     {
-      "@id": "_:ub163bL64C15",
+      "@id": "_:ub301bL53C15",
+      "sh:in": {
+        "@list": [
+          {
+            "@id": "http://iotschema.org/RunModeData"
+          }
+        ]
+      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "http://iotschema.org/acceptsInputData"
+      }
+    },
+    {
+      "@id": "_:ub301bL24C15",
+      "sh:in": {
+        "@list": [
+          {
+            "@id": "http://iotschema.org/Home"
+          }
+        ]
+      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "http://iotschema.org/domain"
+      }
+    },
+    {
+      "@id": "_:ub301bL76C15",
       "sh:in": {
         "@list": [
           {
@@ -80,42 +136,54 @@
       }
     },
     {
+      "@id": "http://iotschema.org/TemperatureShape",
+      "@type": "sh:NodeShape",
+      "sh:property": [
+        {
+          "@id": "_:ub301bL93C15"
+        },
+        {
+          "@id": "_:ub301bL87C15"
+        }
+      ],
+      "sh:targetClass": {
+        "@id": "http://iotschema.org/Temperature"
+      }
+    },
+    {
+      "@id": "_:ub301bL116C15",
+      "sh:class": {
+        "@id": "http://iotschema.org/Property"
+      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "rdfs:subClassOf"
+      }
+    },
+    {
+      "@id": "_:ub301bL65C15",
+      "sh:class": {
+        "@id": "http://iotschema.org/Property"
+      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "rdfs:subClassOf"
+      }
+    },
+    {
       "@id": "http://iotschema.org/RunModeDataShape",
       "@type": "sh:NodeShape",
       "sh:property": {
-        "@id": "_:ub163bL64C15"
+        "@id": "_:ub301bL76C15"
       },
       "sh:targetClass": {
         "@id": "http://iotschema.org/RunModeData"
       }
     },
     {
-      "@id": "_:ub163bL92C15",
-      "sh:in": {
-        "@list": [
-          {
-            "@id": "http://iotschema.org/TemperatureData"
-          }
-        ]
-      },
-      "sh:maxCount": 1,
-      "sh:minCount": 1,
-      "sh:path": {
-        "@id": "http://iotschema.org/providesOutputData"
-      }
-    },
-    {
-      "@id": "http://iotschema.org/TemperatureShape",
-      "@type": "sh:NodeShape",
-      "sh:property": {
-        "@id": "_:ub163bL75C15"
-      },
-      "sh:targetClass": {
-        "@id": "http://iotschema.org/Temperature"
-      }
-    },
-    {
-      "@id": "_:ub163bL53C15",
+      "@id": "_:ub301bL59C15",
       "sh:in": {
         "@list": [
           {
@@ -130,7 +198,107 @@
       }
     },
     {
-      "@id": "_:ub163bL36C15",
+      "@id": "_:ub301bL87C15",
+      "sh:in": {
+        "@list": [
+          {
+            "@id": "http://iotschema.org/TemperatureData"
+          }
+        ]
+      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "http://iotschema.org/providesOutputData"
+      }
+    },
+    {
+      "@id": "_:ub301bL104C15",
+      "sh:in": {
+        "@list": [
+          {
+            "@id": "http://iotschema.org/TemperatureData"
+          }
+        ]
+      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "http://iotschema.org/acceptsInputData"
+      }
+    },
+    {
+      "@id": "http://iotschema.org/TemperatureDataShape",
+      "@type": "sh:NodeShape",
+      "sh:property": {
+        "@id": "_:ub301bL127C17"
+      },
+      "sh:targetClass": {
+        "@id": "http://iotschema.org/TemperatureData"
+      }
+    },
+    {
+      "@id": "_:ub301bL127C17",
+      "schema:unitCode": {
+        "@id": "http://iotschema.org/Celsius"
+      },
+      "sh:datatype": {
+        "@id": "xsd:float"
+      },
+      "sh:maxInclusive": {
+        "@type": "xsd:decimal",
+        "@value": "35.0"
+      },
+      "sh:minInclusive": {
+        "@type": "xsd:decimal",
+        "@value": "5.0"
+      },
+      "sh:path": {
+        "@id": "schema:propertyType"
+      }
+    },
+    {
+      "@id": "_:ub301bL93C15",
+      "sh:class": {
+        "@id": "http://iotschema.org/Property"
+      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "rdfs:subClassOf"
+      }
+    },
+    {
+      "@id": "http://iotschema.org/TargetTemperatureShape",
+      "@type": "sh:NodeShape",
+      "sh:property": [
+        {
+          "@id": "_:ub301bL116C15"
+        },
+        {
+          "@id": "_:ub301bL104C15"
+        },
+        {
+          "@id": "_:ub301bL110C15"
+        }
+      ],
+      "sh:targetClass": {
+        "@id": "http://iotschema.org/TargetTemperature"
+      }
+    },
+    {
+      "@id": "_:ub301bL42C15",
+      "sh:class": {
+        "@id": "http://iotschema.org/Property"
+      },
+      "sh:maxCount": 1,
+      "sh:minCount": 1,
+      "sh:path": {
+        "@id": "rdfs:subClassOf"
+      }
+    },
+    {
+      "@id": "_:ub301bL36C15",
       "sh:in": {
         "@list": [
           {
@@ -145,122 +313,17 @@
       }
     },
     {
-      "@id": "_:ub163bL86C15",
-      "sh:in": {
-        "@list": [
-          {
-            "@id": "http://iotschema.org/TemperatureData"
-          }
-        ]
-      },
-      "sh:maxCount": 1,
-      "sh:minCount": 1,
-      "sh:path": {
-        "@id": "http://iotschema.org/acceptsInputData"
-      }
-    },
-    {
-      "@id": "_:ub163bL19C15",
-      "sh:in": {
-        "@list": [
-          {
-            "@id": "http://iotschema.org/BinarySwitch"
-          },
-          {
-            "@id": "http://iotschema.org/RunMode"
-          },
-          {
-            "@id": "http://iotschema.org/TargetTemperature"
-          },
-          {
-            "@id": "http://iotschema.org/Temperature"
-          }
-        ]
-      },
-      "sh:minCount": 1,
-      "sh:path": {
-        "@id": "http://iotschema.org/providesInteractionPattern"
-      }
-    },
-    {
-      "@id": "http://iotschema.org/TemperatureDataShape",
-      "@type": "sh:NodeShape",
-      "sh:property": {
-        "@id": "_:ub163bL103C17"
-      },
-      "sh:targetClass": {
-        "@id": "http://iotschema.org/TemperatureData"
-      }
-    },
-    {
-      "@id": "_:ub163bL47C15",
-      "sh:in": {
-        "@list": [
-          {
-            "@id": "http://iotschema.org/RunModeData"
-          }
-        ]
-      },
-      "sh:maxCount": 1,
-      "sh:minCount": 1,
-      "sh:path": {
-        "@id": "http://iotschema.org/acceptsInputData"
-      }
-    },
-    {
-      "@id": "_:ub163bL24C15",
-      "sh:in": {
-        "@list": [
-          {
-            "@id": "http://iotschema.org/Home"
-          }
-        ]
-      },
-      "sh:maxCount": 1,
-      "sh:minCount": 1,
-      "sh:path": {
-        "@id": "http://iotschema.org/domain"
-      }
-    },
-    {
-      "@id": "_:ub163bL75C15",
-      "sh:in": {
-        "@list": [
-          {
-            "@id": "http://iotschema.org/TemperatureData"
-          }
-        ]
-      },
-      "sh:maxCount": 1,
-      "sh:minCount": 1,
-      "sh:path": {
-        "@id": "http://iotschema.org/providesOutputData"
-      }
-    },
-    {
-      "@id": "http://iotschema.org/TargetTemperatureShape",
-      "@type": "sh:NodeShape",
-      "sh:property": [
-        {
-          "@id": "_:ub163bL92C15"
-        },
-        {
-          "@id": "_:ub163bL86C15"
-        }
-      ],
-      "sh:targetClass": {
-        "@id": "http://iotschema.org/TargetTemperature"
-      }
-    },
-    {
       "@id": "http://iotschema.org/RunModeShape",
       "@type": "sh:NodeShape",
       "sh:property": [
         {
-          "@id": "_:ub163bL53C15"
+          "@id": "_:ub301bL59C15"
         },
         {
-          "@id": "_:ub163bL47C15"
+          "@id": "_:ub301bL53C15"
+        },
+        {
+          "@id": "_:ub301bL65C15"
         }
       ],
       "sh:targetClass": {

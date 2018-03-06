@@ -1,7 +1,7 @@
 'use strict' 
 
 const fs = require('fs');
-let dir = 'D:\\SHACL\\';
+let dir = 'D:\\Projects//iotschema//SHACL//';
 let ids = [];
 let shapes = [];
 let capObject = {};
@@ -11,11 +11,9 @@ fs.readdir(dir, (err, files) => {
          .forEach(f => {
              let data = fs.readFileSync(dir + f, 'UTF-8');
              json = JSON.parse(data);
-			 //console.log(json);
 		 for (var i = 0, j= 0; i < (json["@graph"]).length; i++, j++) {
 				 shapes[j] = json['@graph'][i];
 				 ids[j] = shapes[j]["@id"];	 
-				 //console.log(shapes[j]);
 			 }		
              getCapabilityNode(shapes);	 	
              processCapabilityNode(shapes, capabilityNode)	;		 
@@ -23,16 +21,15 @@ fs.readdir(dir, (err, files) => {
          });
 });
 let capabilityNode = "";
+let capabilityName = "";
 let interactionsListNode = "";
 let capabilityDomainNode = "";
 function getCapabilityNode(shapes){
 	var capabilityShape = {};
 	 for (var j= 0; j < shapes.length; j++) {
-		 //console.log(shapes[j]);
 		 if(shapes[j]["sh:path"]){
 		 if(shapes[j]["sh:path"]["@id"] == "http://iotschema.org/providesInteractionPattern"){
 			interactionsListNode = shapes[j]["@id"];
-			console.log("1: "+interactionsListNode);
 		 }}
 	 } 
 	 for (var k= 0; k < shapes.length; k++) {
@@ -40,7 +37,7 @@ function getCapabilityNode(shapes){
 			 for(var m= 0; m < shapes[k]["sh:property"].length; m++){
 			  if(shapes[k]["sh:property"][m]["@id"] == interactionsListNode){
 				 capabilityNode = shapes[k]["@id"];
-				 console.log("2: "+capabilityNode);
+				 capabilityName = shapes[k]["sh:targetClass"]["@id"];
 				 capabilityShape = shapes[k];
 		      }
 			}
@@ -49,7 +46,6 @@ function getCapabilityNode(shapes){
 	for(var m= 0; m < capabilityShape["sh:property"].length; m++){
     if(capabilityShape["sh:property"][m]["@id"] != interactionsListNode){
 	 capabilityDomainNode = capabilityShape["sh:property"][m]["@id"];
-	 console.log("3: "+capabilityDomainNode);
   }
 }
 	
@@ -58,28 +54,37 @@ function getCapabilityNode(shapes){
 
 function processCapabilityNode(shapes, capabilityNode){
 	var jsonData = {};
-	console.log();
-	jsonData["name"] = capabilityNode.slice(capabilityNode.lastIndexOf("/")+1);
+	jsonData["@context"] = createContext();
+	jsonData["name"] = capabilityName.slice(capabilityName.lastIndexOf("/")+1);
 	jsonData["@type"] = [];
 	jsonData["@type"][0] = "Thing";
-	jsonData["@type"][1] = capabilityNode; 			
+	jsonData["@type"][1] = capabilityName; 	
+    jsonData["domain"] = getDomain(shapes, capabilityDomainNode);	
 	jsonData["interactions"]= [];
-/*	for (var i = 0, j= 0; i < (expression.valueExpr.values).length; i++, j++) {
-		patterns[j] = expression.valueExpr.values[i];
-		for(var k = 0; k < ids.length; k++){
-			if(patterns[j] == ids[k]){ 
-				jsonData["interaction"][j]  = processShape(shapes[k]);
-			}
-		}		
-	}
-	var tdString = JSON.stringify(jsonData);
-	tdString = tdString.replace(/\\/g, "");
-	result = tdString;
-	createResult(context, tdString);	*/
 	jsonData["interactions"] = processInteractions(shapes, interactionsListNode);
 	console.log("TD");
+	var tdString = JSON.stringify(jsonData).replace(/\\/g, "");
 	console.log(jsonData);
-	//getDomain(shapes, capabilityDomainNode);
+}
+
+let domain = [];
+function getDomain(shapes, capabilityDomainNode){
+	for (var j= 0; j < shapes.length; j++) {
+		if(shapes[j]["@id"] == capabilityDomainNode){
+			if(shapes[j]["sh:path"]){
+				if(shapes[j]["sh:path"]["@id"] == "http://iotschema.org/domain"){
+			for(var k = 0, d = 0; k < shapes[j]["sh:in"]["@list"].length; k++, d++){
+				domain[d] = shapes[j]["sh:in"]["@list"][k]["@id"];
+				}
+				
+			}	
+				
+			}
+				
+		}
+	}
+	return domain;	
+	
 }
 
 let interactionIds = [];
@@ -90,10 +95,7 @@ function processInteractions(shapes, interactionsListNode){
 			var interaction = {};
 			for(var k = 0, m = 0, i = 0; k < shapes[j]["sh:in"]["@list"].length; k++, m++, i++){
 				interactionIds[m] = shapes[j]["sh:in"]["@list"][k]["@id"];
-				console.log(interactionIds[m]);
 				interaction = processInteraction(interactionIds[m]);
-				//console.log("interaction");
-				//console.log(interaction);
 				jsonData[i]=interaction;
 			}
 				
@@ -107,18 +109,15 @@ function processInteraction(interactionid){
 	var jsonData = {};
 	
 	for (var j= 0; j < shapes.length; j++) {
-		//console.log("4: "+interactionid);
     if(shapes[j]["sh:targetClass"]){
       if(shapes[j]["sh:targetClass"]["@id"] == interactionid){
-		jsonData["name"] = interactionid.slice(capabilityNode.lastIndexOf("/")+1);
-		jsonData["@type"] = interactionid;
+		jsonData["name"] = interactionid.slice(interactionid.lastIndexOf("/")+1);
+		jsonData["@type"] = [];
+		var type1 = interactionid;
 		if(shapes[j]["sh:property"]["@id"]){
 			interactionProperties[0] = shapes[j]["sh:property"]["@id"];
-			//console.log("interaction properties: "+interactionProperties[0]);
 			var property = {};
 			property = processInteractionProperties(interactionProperties[0]);
-			//console.log("HERE");
-			//console.log(JSON.stringify(property));
 			if(JSON.stringify(property).includes("inputData")){
 				jsonData["inputData"] = {};
 				jsonData["inputData"] = JSON.stringify(property["inputData"]);
@@ -130,7 +129,6 @@ function processInteraction(interactionid){
 		else{
 		for(var k = 0, m = 0; k < shapes[j]["sh:property"].length; k++, m++){
 			interactionProperties[m] = shapes[j]["sh:property"][k]["@id"];
-			//console.log("interaction properties: "+interactionProperties[m]);
 			var property = processInteractionProperties(interactionProperties[m]);
 			if(JSON.stringify(property).includes("inputData")){
 				jsonData["inputData"] = {};
@@ -139,8 +137,11 @@ function processInteraction(interactionid){
 				jsonData["outputData"] = {};
 				jsonData["outputData"] = property["outputData"];
 			}
+			else if(JSON.stringify(property).includes("@type")){
+				var types = createInteractionTypes(type1, property["@type"]);
+				jsonData["@type"] = types; 
+			}
 		}}
-        //console.log(jsonData);
       j=0;
 	  break;
 	  }
@@ -149,16 +150,21 @@ function processInteraction(interactionid){
 	return jsonData;
 }
 
+function createInteractionTypes(type1, type2){
+	var types = [];
+	types[0] = getConcept(type1);
+	types[1] = getConcept(type2);
+	return(JSON.stringify(types));
+}
+
 function processInteractionProperties(interactionProps){
 	var jsonData = {};
-	//jsonData["name"] = interactionProps.slice(interactionProps.lastIndexOf("/")+1);
  	for (var j= 0; j < shapes.length; j++) {
      if(shapes[j]["@id"] == interactionProps){
 		 
 		 if(shapes[j]["sh:path"]["@id"] == "http://iotschema.org/acceptsInputData"){
 			 jsonData["inputData"] = {};
 			 var interactionDataNode = shapes[j]["sh:in"]["@list"][0]["@id"];
-			 //console.log("data: "+interactionDataNode);
 			 var data = getInteractionDataNode(interactionDataNode);
 			 jsonData["inputData"] = data;
 			 
@@ -166,15 +172,17 @@ function processInteractionProperties(interactionProps){
 		 else if(shapes[j]["sh:path"]["@id"] == "http://iotschema.org/providesOutputData"){
              jsonData["outputData"] = {};
 			 var interactionDataNode = shapes[j]["sh:in"]["@list"][0]["@id"];
-			// console.log("data: "+interactionDataNode);	
 			 var data = getInteractionDataNode(interactionDataNode);	
               jsonData["outputData"] = data;			 
 		 }
+		 else if(shapes[j]["sh:path"]["@id"] == "rdfs:subClassOf"){
+             jsonData["@type"] = {};
+			 var data = shapes[j]["sh:class"]["@id"];	
+              jsonData["@type"] = data;			 
+		 }		 
 	 }
 		
 	}	
-	//console.log("HERE");
-	//console.log(jsonData);
 	return(jsonData);
 }
 
@@ -210,20 +218,14 @@ function generateJSONSchemaData(interactionDataNode, dataNode){
 	var id = interactionDataNode.slice(interactionDataNode.lastIndexOf("/")+1);
 	if(dataNode["sh:in"]){
      var list = [];
-	//console.log("enum");
     for(var j = 0, i = 0; j < dataNode["sh:in"]["@list"].length; i++, j++){
 		list[i] = dataNode["sh:in"]["@list"][j]["@id"];
 	}	
 	jsonData = generateEnum(id, list);
-	//console.log("JSON Schema Data");
-	//console.log(jsonData);
 	}else if(dataNode["sh:datatype"] && (dataNode["sh:minInclusive"] || dataNode["sh:maxInclusive"] ||dataNode["sh:minExclusive"] ||dataNode["sh:maxExclusive"])){
      	jsonData = generateNumericData(id, dataNode);	
-	//	console.log("numeric type");
-		//console.log(jsonData);
 	}else if(dataNode["sh:datatype"] && (dataNode["sh:minCount"] || dataNode["sh:maxCount"])){
      	jsonData = generateArrayData(id, dataNode);	
-		//console.log(jsonData);
 	}	
 	return(jsonData);
 	
@@ -247,8 +249,15 @@ function generateNumericData(id, dataNode){
 	var jsonData = {};
 	jsonData[id] = {};
 	jsonData[id]["properties"] = {};
-	if(dataNode["sh:datatype"]["@id"] == "xsd:integer" || dataNode["sh:datatype"]["@id"] == "xsd:float"){
+	if(dataNode["sh:datatype"]["@id"] == "xsd:integer" || dataNode["sh:datatype"]["@id"] == "xsd:float"
+	   || dataNode["sh:datatype"]["@id"] == "xsd:decimal"){
+	if(dataNode["sh:datatype"]["@id"] == "xsd:integer"){
+	jsonData[id]["properties"]["type"] = "integer";
+	}
+	else if(dataNode["sh:datatype"]["@id"] == "xsd:float" || dataNode["sh:datatype"]["@id"] == "xsd:double"
+	        || dataNode["sh:datatype"]["@id"] == "xsd:decimal"){
 	jsonData[id]["properties"]["type"] = "number";
+	}
 	if(dataNode["sh:minInclusive"]){
 	jsonData[id]["properties"]["minimum"] = dataNode["sh:minInclusive"]["@value"];
 	//jsonData["properties"][id]["exclusiveMinimum"] = "false" ;
@@ -265,9 +274,17 @@ function generateNumericData(id, dataNode){
 		jsonData[id]["properties"]["maximum"] = dataNode["sh:maxExclusive"]["@value"];
 		jsonData[id]["properties"]["exclusiveMaximum"] = true ;
 	}
+	if(dataNode["schema:unitCode"]){
+		jsonData[id]["properties"]["unit"] = getConcept(dataNode["schema:unitCode"]["@id"]);
+		
 	}
-	//console.log(JSON.stringify(jsonData));
+	}
 	return(JSON.stringify(jsonData));
+}
+
+function getConcept(concept){
+	var term = concept.slice(concept.lastIndexOf("/")+1);
+	return(term);
 }
 
 function generateArrayData(id, dataNode){
@@ -278,4 +295,11 @@ function generateArrayData(id, dataNode){
 	 jsonData[id]["items"]= {};
 	 jsonData[id]["items"]["type"]= dataNode["sh:datatype"]["@id"];
 	 return(JSON.stringify(jsonData));
+}
+
+let context = [];
+function createContext(){
+	context.push("https://w3c.github.io/wot/w3c-wot-td-context.jsonld");
+	context.push("https://github.com/iot-schema-collab/iotschema/iotschema-context.jsonld");
+	return context;
 }

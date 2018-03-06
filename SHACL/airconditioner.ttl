@@ -20,7 +20,7 @@
   sh:property [
       sh:path :providesInteractionPattern ;
       sh:minCount 1 ;
-	  sh:in (:BinarySwitch :CountDown :RunMode :TargetTemperature :Temperature :WindStrength) ;
+	  sh:in (:BinarySwitch :RunMode :TargetTemperature :Temperature) ;
     ] ;
   sh:property [
       sh:path :domain ;
@@ -40,6 +40,12 @@
       sh:maxCount 1 ;
 	  sh:in ( :Toggle ) ;
     ] ;
+  sh:property [
+      sh:path rdfs:subClassOf ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:class :Property ;
+    ] ;	
 .
 
 :RunModeShape
@@ -57,6 +63,12 @@
       sh:maxCount 1 ;
 	  sh:in ( :RunModeData ) ;
     ] ;	
+  sh:property [
+      sh:path rdfs:subClassOf ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:class :Property ;
+    ] ;		
 .
 
 :RunModeDataShape
@@ -72,18 +84,24 @@
 
 :TemperatureShape
     a sh:NodeShape ;
-    sh:targetClass :TemperatureData ;
+    sh:targetClass :Temperature ;
   sh:property [
       sh:path :providesOutputData ;
       sh:minCount 1 ;
       sh:maxCount 1 ;
 	  sh:in ( :TemperatureData ) ;
     ] ;	
+  sh:property [
+      sh:path rdfs:subClassOf ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:class :Property ;
+    ] ;		
 .
 
 :TargetTemperatureShape
     a sh:NodeShape ;
-    sh:targetClass :TemperatureData ;
+    sh:targetClass :TargetTemperature ;
   sh:property [
       sh:path :acceptsInputData ;
       sh:minCount 1 ;
@@ -96,6 +114,12 @@
       sh:maxCount 1 ;
 	  sh:in ( :TemperatureData ) ;
     ] ;	
+  sh:property [
+      sh:path rdfs:subClassOf ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:class :Property ;
+    ] ;		
 .
 
 :TemperatureDataShape
@@ -105,6 +129,7 @@
 		sh:path schema:propertyType ;
 		sh:minInclusive 5.0 ;
 		sh:maxInclusive 35.0 ;
-		sh:datatype xsd:float
+		sh:datatype xsd:float ;
+		schema:unitCode :Celsius
     ]		
 .
