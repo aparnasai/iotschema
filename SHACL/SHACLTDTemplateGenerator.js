@@ -55,16 +55,17 @@ function getCapabilityNode(shapes){
 function processCapabilityNode(shapes, capabilityNode){
 	var jsonData = {};
 	jsonData["@context"] = createContext();
-	jsonData["name"] = capabilityName.slice(capabilityName.lastIndexOf("/")+1);
+	jsonData.name = capabilityName.slice(capabilityName.lastIndexOf("/")+1);
 	jsonData["@type"] = [];
 	jsonData["@type"][0] = "Thing";
-	jsonData["@type"][1] = capabilityName; 	
+	jsonData["@type"][1] = getConcept(capabilityName); 	
     jsonData["domain"] = getDomain(shapes, capabilityDomainNode);	
-	jsonData["interactions"]= [];
-	jsonData["interactions"] = processInteractions(shapes, interactionsListNode);
+	jsonData["interaction"]= [];
+	jsonData["interaction"] = processInteractions(shapes, interactionsListNode);
 	console.log("TD");
-	var tdString = JSON.stringify(jsonData).replace(/\\/g, "");
-	console.log(jsonData);
+	var tdString = JSON.stringify(jsonData,null,4);
+	//tdString = tdString.replace(\", "");
+	console.log(tdString);
 }
 
 let domain = [];
@@ -74,7 +75,7 @@ function getDomain(shapes, capabilityDomainNode){
 			if(shapes[j]["sh:path"]){
 				if(shapes[j]["sh:path"]["@id"] == "http://iotschema.org/domain"){
 			for(var k = 0, d = 0; k < shapes[j]["sh:in"]["@list"].length; k++, d++){
-				domain[d] = shapes[j]["sh:in"]["@list"][k]["@id"];
+				domain[d] = getConcept(shapes[j]["sh:in"]["@list"][k]["@id"]);
 				}
 				
 			}	
@@ -84,7 +85,6 @@ function getDomain(shapes, capabilityDomainNode){
 		}
 	}
 	return domain;	
-	
 }
 
 let interactionIds = [];
@@ -113,35 +113,64 @@ function processInteraction(interactionid){
       if(shapes[j]["sh:targetClass"]["@id"] == interactionid){
 		jsonData["name"] = interactionid.slice(interactionid.lastIndexOf("/")+1);
 		jsonData["@type"] = [];
+		var data = {};
 		var type1 = interactionid;
+		var itype = "";
 		if(shapes[j]["sh:property"]["@id"]){
 			interactionProperties[0] = shapes[j]["sh:property"]["@id"];
 			var property = {};
 			property = processInteractionProperties(interactionProperties[0]);
 			if(JSON.stringify(property).includes("inputData")){
-				jsonData["inputData"] = {};
-				jsonData["inputData"] = JSON.stringify(property["inputData"]);
+				jsonData["inputSchema"] = {};
+				jsonData["inputSchema"] = JSON.stringify(property["inputData"]);
 			}else if(JSON.stringify(property).includes("outputData")){
-				jsonData["outputData"] = {};
-				jsonData["outputData"] = property["outputData"];
+				jsonData["outputSchema"] = {};
+				jsonData["outputSchema"] = property["outputData"];
 			}
 		}
 		else{
 		for(var k = 0, m = 0; k < shapes[j]["sh:property"].length; k++, m++){
 			interactionProperties[m] = shapes[j]["sh:property"][k]["@id"];
 			var property = processInteractionProperties(interactionProperties[m]);
-			if(JSON.stringify(property).includes("inputData")){
-				jsonData["inputData"] = {};
-				jsonData["inputData"] = property["inputData"];
-			}else if(JSON.stringify(property).includes("outputData")){
-				jsonData["outputData"] = {};
-				jsonData["outputData"] = property["outputData"];
-			}
-			else if(JSON.stringify(property).includes("@type")){
+            if(JSON.stringify(property).includes("@type")){
+				itype = property["@type"];
 				var types = createInteractionTypes(type1, property["@type"]);
 				jsonData["@type"] = types; 
+			}		
+			else if(JSON.stringify(property).includes("inputData")){
+				data["inputSchema"] = {};
+				data["inputSchema"] = property["inputData"];
+			}else if(JSON.stringify(property).includes("outputData")){
+				data["outputSchema"] = {};
+				data["outputSchema"] = property["outputData"];
 			}
 		}}
+		if(itype.includes("Property") || itype.includes("Event")){
+			var w = 0;
+			jsonData["schema"] = {};
+			if(data["inputSchema"]!= undefined){
+			jsonData["schema"] = data["inputSchema"];
+			w++;
+			}
+		    if(data["outputSchema"]!= undefined){
+			jsonData["schema"] = data["outputSchema"];
+			}
+			if(w !=0){
+				jsonData["writable"] = true;
+			}else{
+				jsonData["writable"] = false;
+			}
+		} else if(itype.includes("Action")){
+			jsonData["inputSchema"] = {};
+			jsonData["outputSchema"] = {};
+			jsonData["inputSchema"] = data["inputSchema"];
+			jsonData["outputSchema"] = data["outputSchema"];
+			
+		}
+	jsonData["form"] = [];
+	jsonData["form"][0] = {};
+	jsonData["form"][0]["href"] = " ";
+	jsonData["form"][0]["mediaType"] = " ";
       j=0;
 	  break;
 	  }
@@ -154,7 +183,7 @@ function createInteractionTypes(type1, type2){
 	var types = [];
 	types[0] = getConcept(type1);
 	types[1] = getConcept(type2);
-	return(JSON.stringify(types));
+	return(types);
 }
 
 function processInteractionProperties(interactionProps){
@@ -241,7 +270,7 @@ function generateEnum(id, list){
 	 }
 	 jsonData[id]["enum"]= values;
 	 
-	 return(JSON.stringify(jsonData));	
+	 return(jsonData);	
 	
 }
 
@@ -279,7 +308,7 @@ function generateNumericData(id, dataNode){
 		
 	}
 	}
-	return(JSON.stringify(jsonData));
+	return(jsonData);
 }
 
 function getConcept(concept){
@@ -294,7 +323,7 @@ function generateArrayData(id, dataNode){
 	 jsonData[id]["maxItems"]= dataNode["sh:maxCount"]["@value"];
 	 jsonData[id]["items"]= {};
 	 jsonData[id]["items"]["type"]= dataNode["sh:datatype"]["@id"];
-	 return(JSON.stringify(jsonData));
+	 return(jsonData);
 }
 
 let context = [];
