@@ -31,4 +31,4 @@ base <http://iotschema.org/>
 
 <PumpSpeedData>
 { schema:propertyType xsd:float MinInclusive 88.0 MaxInclusive 2465.0 ;
- schema:unitCode :GallonsPerMinute }
+ schema:unitCode :RevolutionsPerMinute }

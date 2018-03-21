@@ -59,7 +59,10 @@ function processCapabilityNode(shapes, capabilityNode){
 	jsonData["@type"] = [];
 	jsonData["@type"][0] = "Thing";
 	jsonData["@type"][1] = getConcept(capabilityName); 	
+<<<<<<< HEAD
 	jsonData["base"] = "";
+=======
+>>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
     jsonData["domain"] = getDomain(shapes, capabilityDomainNode);	
 	jsonData["interaction"]= [];
 	jsonData["interaction"] = processInteractions(shapes, interactionsListNode);
@@ -127,9 +130,12 @@ function processInteraction(interactionid){
 			}else if(JSON.stringify(property).includes("outputData")){
 				jsonData["outputSchema"] = {};
 				jsonData["outputSchema"] = property["outputData"];
+<<<<<<< HEAD
 			}else if(JSON.stringify(property).includes("observable")){
 				jsonData["observable"] = {};
 				jsonData["observable"] = property["observable"];
+=======
+>>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
 			}
 		}
 		else{
@@ -137,7 +143,10 @@ function processInteraction(interactionid){
 			
 			interactionProperties[m] = shapes[j]["sh:property"][k]["@id"];
 			var property = processInteractionProperties(interactionProperties[m]);
+<<<<<<< HEAD
 			console.log("property "+JSON.stringify(property));
+=======
+>>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
             if(JSON.stringify(property).includes("@type")){
 				itype = property["@type"];
 				var types = createInteractionTypes(type1, property["@type"]);
@@ -149,10 +158,13 @@ function processInteraction(interactionid){
 			}else if(JSON.stringify(property).includes("outputData")){
 				data["outputSchema"] = {};
 				data["outputSchema"] = property["outputData"];
+<<<<<<< HEAD
 			}else if(JSON.stringify(property).includes("observable")){
 				console.log("observable "+JSON.stringify(property));
 				jsonData["observable"] = {};
 				jsonData["observable"] = property["observable"];
+=======
+>>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
 			}
 		}}
 		if(itype.includes("Property") || itype.includes("Event")){
@@ -179,8 +191,13 @@ function processInteraction(interactionid){
 		}
 	jsonData["form"] = [];
 	jsonData["form"][0] = {};
+<<<<<<< HEAD
 	jsonData["form"][0]["href"] = "";
 	jsonData["form"][0]["mediaType"] = "";
+=======
+	jsonData["form"][0]["href"] = " ";
+	jsonData["form"][0]["mediaType"] = " ";
+>>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
       j=0;
 	  break;
 	  }
@@ -191,8 +208,13 @@ function processInteraction(interactionid){
 
 function createInteractionTypes(type1, type2){
 	var types = [];
+<<<<<<< HEAD
 	types[0] = getConcept(type2);
 	types[1] = getConcept(type1);
+=======
+	types[0] = getConcept(type1);
+	types[1] = getConcept(type2);
+>>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
 	return(types);
 }
 
