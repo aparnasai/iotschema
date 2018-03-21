@@ -41,6 +41,12 @@
 	  sh:in ( :Toggle ) ;
     ] ;
   sh:property [
+      sh:path :observable ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+	  sh:datatype false ;
+    ] ;	
+  sh:property [
       sh:path rdfs:subClassOf ;
       sh:maxCount 1 ;
       sh:minCount 1 ;
@@ -68,6 +74,12 @@
       sh:maxCount 1 ;
       sh:minCount 1 ;
       sh:class :Property ;
+    ] ;	
+  sh:property [
+      sh:path :observable ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+	  sh:datatype false ;
     ] ;		
 .
 
@@ -96,6 +108,12 @@
       sh:maxCount 1 ;
       sh:minCount 1 ;
       sh:class :Property ;
+    ] ;	
+  sh:property [
+      sh:path :observable ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+	  sh:datatype false ;
     ] ;		
 .
 
@@ -119,6 +137,12 @@
       sh:maxCount 1 ;
       sh:minCount 1 ;
       sh:class :Property ;
+    ] ;	
+  sh:property [
+      sh:path :observable ;
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+	  sh:datatype false ;
     ] ;		
 .
 
