@@ -1,13 +1,15 @@
 'use strict' 
 
 const fs = require('fs');
-let dir = 'D:\\Projects//TD-Generator//iotschema//SHACL//';
+const sep = require('path').sep;
+let dir = 'shapes'+sep;
 let ids = [];
 let shapes = [];
 let capObject = {};
+var file = process.argv[2];
 fs.readdir(dir, (err, files) => {
 	let json = "";
-    files.filter(f => f.endsWith('.jsonld'))
+    files.filter(f => f.includes(file))
          .forEach(f => {
              let data = fs.readFileSync(dir + f, 'UTF-8');
              json = JSON.parse(data);
@@ -19,7 +21,13 @@ fs.readdir(dir, (err, files) => {
              processCapabilityNode(shapes, capabilityNode)	;		 
 
          });
-});
+	if(file!=null){
+	fs.writeFileSync('GeneratedTDs' + sep + tdName + '-TDTemplate.jsonld', tdString, { encoding: 'utf-8' });	 
+    console.log('Generated TD template '+tdName+'-TDTemplate.jsonld saved in ./GeneratedTDs folder' );
+	}else {
+		console.log("Please provide a SHACL shape as input parameter");
+	}
+	});
 let capabilityNode = "";
 let capabilityName = "";
 let interactionsListNode = "";
@@ -51,25 +59,24 @@ function getCapabilityNode(shapes){
 	
     return capabilityNode;	
 }
-
+var tdString = null;
+var tdName = null;
 function processCapabilityNode(shapes, capabilityNode){
 	var jsonData = {};
 	jsonData["@context"] = createContext();
 	jsonData.name = capabilityName.slice(capabilityName.lastIndexOf("/")+1);
+	tdName = jsonData.name;
 	jsonData["@type"] = [];
 	jsonData["@type"][0] = "Thing";
 	jsonData["@type"][1] = getConcept(capabilityName); 	
-<<<<<<< HEAD
 	jsonData["base"] = "";
-=======
->>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
     jsonData["domain"] = getDomain(shapes, capabilityDomainNode);	
 	jsonData["interaction"]= [];
 	jsonData["interaction"] = processInteractions(shapes, interactionsListNode);
-	console.log("TD");
-	var tdString = JSON.stringify(jsonData,null,4);
+	//console.log("TD");
+	tdString = JSON.stringify(jsonData,null,4);
 	//tdString = tdString.replace(\", "");
-	console.log(tdString);
+	//console.log(tdString);
 }
 
 let domain = [];
@@ -130,41 +137,29 @@ function processInteraction(interactionid){
 			}else if(JSON.stringify(property).includes("outputData")){
 				jsonData["outputSchema"] = {};
 				jsonData["outputSchema"] = property["outputData"];
-<<<<<<< HEAD
 			}else if(JSON.stringify(property).includes("observable")){
 				jsonData["observable"] = {};
 				jsonData["observable"] = property["observable"];
-=======
->>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
 			}
 		}
 		else{
 		for(var k = 0, m = 0; k < shapes[j]["sh:property"].length; k++, m++){
 			
 			interactionProperties[m] = shapes[j]["sh:property"][k]["@id"];
-			var property = processInteractionProperties(interactionProperties[m]);
-<<<<<<< HEAD
-			console.log("property "+JSON.stringify(property));
-=======
->>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
-            if(JSON.stringify(property).includes("@type")){
-				itype = property["@type"];
-				var types = createInteractionTypes(type1, property["@type"]);
-				jsonData["@type"] = types; 
-			}		
-			else if(JSON.stringify(property).includes("inputData")){
+			var property = processInteractionProperties(interactionProperties[m]);		
+			if(JSON.stringify(property).includes("inputData")){
 				data["inputSchema"] = {};
 				data["inputSchema"] = property["inputData"];
 			}else if(JSON.stringify(property).includes("outputData")){
 				data["outputSchema"] = {};
 				data["outputSchema"] = property["outputData"];
-<<<<<<< HEAD
 			}else if(JSON.stringify(property).includes("observable")){
-				console.log("observable "+JSON.stringify(property));
 				jsonData["observable"] = {};
 				jsonData["observable"] = property["observable"];
-=======
->>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
+			}else if(JSON.stringify(property).includes("@type")){
+				itype = property["@type"];
+				var types = createInteractionTypes(type1, property["@type"]);
+				jsonData["@type"] = types; 
 			}
 		}}
 		if(itype.includes("Property") || itype.includes("Event")){
@@ -191,13 +186,8 @@ function processInteraction(interactionid){
 		}
 	jsonData["form"] = [];
 	jsonData["form"][0] = {};
-<<<<<<< HEAD
 	jsonData["form"][0]["href"] = "";
 	jsonData["form"][0]["mediaType"] = "";
-=======
-	jsonData["form"][0]["href"] = " ";
-	jsonData["form"][0]["mediaType"] = " ";
->>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
       j=0;
 	  break;
 	  }
@@ -208,13 +198,13 @@ function processInteraction(interactionid){
 
 function createInteractionTypes(type1, type2){
 	var types = [];
-<<<<<<< HEAD
+
 	types[0] = getConcept(type2);
 	types[1] = getConcept(type1);
-=======
-	types[0] = getConcept(type1);
-	types[1] = getConcept(type2);
->>>>>>> 186e1128dd47057dd880c9316cd4214078fc2d75
+
+//	types[0] = getConcept(type1);
+//	types[1] = getConcept(type2);
+
 	return(types);
 }
 
@@ -225,16 +215,49 @@ function processInteractionProperties(interactionProps){
 		 
 		 if(shapes[j]["sh:path"]["@id"] == "http://iotschema.org/acceptsInputData"){
 			 jsonData["inputData"] = {};
-			 var interactionDataNode = shapes[j]["sh:in"]["@list"][0]["@id"];
+			 if(shapes[j]["sh:in"]){	
+             var dataList = shapes[j]["sh:in"];	
+             if(dataList["@list"].length > 1){
+			   jsonData["inputData"]["type"] = "object";
+			   jsonData["inputData"]["field"] = []; 
+			 }		 	 
+			 for(var k= 0; k < dataList["@list"].length; k++){
+			 var interactionDataNode = shapes[j]["sh:in"]["@list"][k]["@id"];
 			 var data = getInteractionDataNode(interactionDataNode);
-			 jsonData["inputData"] = data;
+			 data["@type"] = getConcept(interactionDataNode);
+			  if(dataList["@list"].length > 1)	
+			 jsonData["inputData"]["field"].push(data);
+              else
+			  jsonData["inputData"] = data;		 
+            }
+			 }
+            else if(shapes[j]["sh:datatype"]!= undefined){
+				jsonData["inputData"] = getJSONSchemaDatatype(shapes[j]["sh:datatype"]["@id"]);
+				
+			}			 
 			 
 		 }
 		 else if(shapes[j]["sh:path"]["@id"] == "http://iotschema.org/providesOutputData"){
-             jsonData["outputData"] = {};
-			 var interactionDataNode = shapes[j]["sh:in"]["@list"][0]["@id"];
-			 var data = getInteractionDataNode(interactionDataNode);	
-              jsonData["outputData"] = data;			 
+             jsonData["outputData"] = [];
+			 if(shapes[j]["sh:in"]){
+				 var dataList = shapes[j]["sh:in"]; 
+			 if(dataList["@list"].length > 1){
+			   jsonData["outputData"]["type"] = "object";
+			   jsonData["outputData"]["field"] = []; 
+			 }		 
+			 for(var k= 0; k < dataList["@list"].length; k++){
+			 var interactionDataNode = dataList["@list"][k]["@id"];
+			 var data = getInteractionDataNode(interactionDataNode);
+             data["@type"] = getConcept(interactionDataNode);	
+              if(dataList["@list"].length > 1)			 
+              jsonData["outputData"]["field"].push(data);	
+		      else
+			  jsonData["outputData"] = data;
+            }}
+            else if(shapes[j]["sh:datatype"]!= undefined){
+				jsonData["outputData"] = getJSONSchemaDatatype(shapes[j]["sh:datatype"]["@id"]);
+				
+			}			
 		 }
 		 else if(shapes[j]["sh:path"]["@id"] == "rdfs:subClassOf"){
              jsonData["@type"] = {};
@@ -256,10 +279,11 @@ function getInteractionDataNode(interactionDataNode){
 	var jsonData = {};
 	var dataNode = {};
 	var temp = {};
+	var dataType = null;
  	for (var j= 0; j < shapes.length; j++) {
         if(shapes[j]["sh:targetClass"]){
 		if(shapes[j]["sh:targetClass"]["@id"] == interactionDataNode){
-			
+			dataType = getConcept(shapes[j]["sh:targetClass"]["@id"]);
 			temp = shapes[j]["sh:property"]["@id"];
 			break;
 		}}
@@ -272,11 +296,37 @@ function getInteractionDataNode(interactionDataNode){
 		if(shapes[j]["@id"] == temp){
 			dataNode = shapes[j];
 			jsonData = generateJSONSchemaData(interactionDataNode, dataNode);
-			
+			//jsonData["@type"] = dataType;
 			break;
 		}
 	}	
 	return(jsonData);
+}
+
+function getJSONSchemaDatatype(jsonData){
+	var jsondt = {};
+	if(jsonData == "True"){
+		jsondt = true
+	}
+	else if(jsonData == "xsd:false"){
+		jsondt = false
+	}
+	else if(jsonData == "xsd:boolean"){
+		jsondt = "boolean"
+	}
+	else if(jsonData == "xsd:integer"){
+		jsondt = "integer"
+	}
+	else if(jsonData == "xsd:float"){
+		jsondt = "number"
+	}
+	else if(jsonData == "xsd:string"){
+		jsondt = "string"
+	}
+	else{
+		jsondt = getConcept(jsonData);
+	}
+	return jsondt;
 }
 
 function generateJSONSchemaData(interactionDataNode, dataNode){
@@ -299,13 +349,13 @@ function generateJSONSchemaData(interactionDataNode, dataNode){
 
 function generateEnum(id, list){
 	 var jsonData = {};
-	 jsonData[id] = {};
-	 jsonData[id]["type"]= "string"; 
+	 jsonData["field"] = {};
+	 jsonData["field"]["type"]= "string"; 
 	 var values = [];
 	 for(var i = 0; i < list.length; i++ ){
 		 values.push(getConcept(list[i]));
 	 }
-	 jsonData[id]["enum"]= values;
+	 jsonData["field"]["enum"]= values;
 	 
 	 return(jsonData);	
 	
@@ -324,35 +374,46 @@ function generateNumericData(id, dataNode){
 	        || dataNode["sh:datatype"]["@id"] == "xsd:decimal"){
 	jsonData["type"] = "number";
 	}
-	if(dataNode["sh:minInclusive"]){
-	if(jsonData["type"] == "integer")
-	jsonData["minimum"] = parseInt(dataNode["sh:minInclusive"]["@value"]);
+	if(dataNode["sh:minInclusive"]!= undefined){
+	if(jsonData["type"] == "integer"){
+		if(dataNode["sh:minInclusive"]["@value"]!= undefined){
+	jsonData["minimum"] = parseInt(dataNode["sh:minInclusive"]["@value"]);}
+	else if(dataNode["sh:minInclusive"]!= undefined){
+		jsonData["minimum"] = parseInt(dataNode["sh:minInclusive"]);
+	}
+	}
     else if(jsonData["type"] == "number")
 	jsonData["minimum"] = parseFloat(dataNode["sh:minInclusive"]["@value"]);
 	//jsonData["properties"][id]["exclusiveMinimum"] = "false" ;
 	}
-	if(dataNode["sh:maxInclusive"]){
-	if(jsonData["type"] == "integer")	
-	jsonData["maximum"] = parseInt(dataNode["sh:maxInclusive"]["@value"]);
+	if(dataNode["sh:maxInclusive"]!= undefined){
+	if(jsonData["type"] == "integer"){	
+	if(dataNode["sh:maxInclusive"]["@value"]!= undefined){
+	jsonData["maximum"] = parseInt(dataNode["sh:maxInclusive"]["@value"]); }
+	else if(dataNode["sh:maxInclusive"]!= undefined){
+		jsonData["maximum"] = parseInt(dataNode["sh:maxInclusive"]);
+	}
+	
+	}
     else if(jsonData["type"] == "number")
 	jsonData["maximum"] = parseFloat(dataNode["sh:maxInclusive"]["@value"]);
 	//jsonData["properties"][id]["exclusiveMinimum"] = "false" ;
 	}
-	if(dataNode["sh:minExclusive"]){
+	if(dataNode["sh:minExclusive"]!= undefined){
 		if(jsonData["type"] == "integer")
 		jsonData["minimum"] = parseInt(dataNode["sh:minExclusive"]["@value"]);
 	    else if(jsonData["type"] == "number")
 	    jsonData["minimum"] = parseFloat(dataNode["sh:minExclusive"]["@value"]);
 		jsonData["exclusiveMinimum"] = true ;
 	}
-	if(dataNode["sh:maxExclusive"]){
+	if(dataNode["sh:maxExclusive"]!= undefined){
 		if(jsonData["type"] == "integer")
 		jsonData["maximum"] = parseInt(dataNode["sh:maxExclusive"]["@value"]);
 	    else if(jsonData["type"] == "number")
 	    jsonData["maximum"] = parseFloat(dataNode["sh:maxExclusive"]["@value"]);
 		jsonData["exclusiveMaximum"] = true ;
 	}
-	if(dataNode["schema:unitCode"]){
+	if(dataNode["schema:unitCode"]!= undefined){
 		jsonData["unit"] = getConcept(dataNode["schema:unitCode"]["@id"]);
 		
 	}
@@ -361,9 +422,9 @@ function generateNumericData(id, dataNode){
 }
 
 function getConcept(concept){
+	if(concept!= undefined)
 	if(concept.includes("iotschema.org"))
 	{	var term = new String(concept.slice(concept.lastIndexOf("/")+1));
-        console.log("Term: "+term);
         if(term != "Property" && term != "Event" && term != "Action")
         term = "iot:".concat(term);
 	}
